@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzj.expert.mapper.EdWorkExperienceMapper">
+    
+    <resultMap type="EdWorkExperience" id="EdWorkExperienceResult">
+        <result property="id"    column="id"    />
+        <result property="edExpertInfoId"    column="ed_expert_info_id"    />
+        <result property="edExpertInfoChangeId"    column="ed_expert_info_change_id"    />
+        <result property="timePeriod"    column="time_period"    />
+        <result property="organization"    column="organization"    />
+        <result property="positionHeld"    column="position_held"    />
+        <result property="fieldWorked"    column="field_worked"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectEdWorkExperienceVo">
+        select id, ed_expert_info_id, time_period, organization, position_held, field_worked, create_time from ed_work_experience
+    </sql>
+
+    <select id="selectEdWorkExperienceList" parameterType="EdWorkExperience" resultMap="EdWorkExperienceResult">
+        <include refid="selectEdWorkExperienceVo"/>
+        <where>  
+            <if test="edExpertInfoId != null "> and ed_expert_info_id = #{edExpertInfoId}</if>
+            <if test="edExpertInfoChangeId != null "> and ed_expert_info_change_id = #{edExpertInfoChangeId}</if>
+            <if test="timePeriod != null  and timePeriod != ''"> and time_period = #{timePeriod}</if>
+            <if test="organization != null  and organization != ''"> and organization = #{organization}</if>
+            <if test="positionHeld != null  and positionHeld != ''"> and position_held = #{positionHeld}</if>
+            <if test="fieldWorked != null  and fieldWorked != ''"> and field_worked = #{fieldWorked}</if>
+        </where>
+    </select>
+    
+    <select id="selectEdWorkExperienceById" parameterType="Integer" resultMap="EdWorkExperienceResult">
+        <include refid="selectEdWorkExperienceVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertEdWorkExperience" parameterType="EdWorkExperience" useGeneratedKeys="true" keyProperty="id">
+        insert into ed_work_experience
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="edExpertInfoId != null">ed_expert_info_id,</if>
+            <if test="timePeriod != null and timePeriod != ''">time_period,</if>
+            <if test="organization != null and organization != ''">organization,</if>
+            <if test="positionHeld != null">position_held,</if>
+            <if test="fieldWorked != null and fieldWorked != ''">field_worked,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="edExpertInfoId != null">#{edExpertInfoId},</if>
+            <if test="timePeriod != null and timePeriod != ''">#{timePeriod},</if>
+            <if test="organization != null and organization != ''">#{organization},</if>
+            <if test="positionHeld != null">#{positionHeld},</if>
+            <if test="fieldWorked != null and fieldWorked != ''">#{fieldWorked},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEdWorkExperience" parameterType="EdWorkExperience">
+        update ed_work_experience
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="edExpertInfoId != null">ed_expert_info_id = #{edExpertInfoId},</if>
+            <if test="timePeriod != null and timePeriod != ''">time_period = #{timePeriod},</if>
+            <if test="organization != null and organization != ''">organization = #{organization},</if>
+            <if test="positionHeld != null">position_held = #{positionHeld},</if>
+            <if test="fieldWorked != null and fieldWorked != ''">field_worked = #{fieldWorked},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteEdWorkExperienceById" parameterType="Integer">
+        delete from ed_work_experience where id = #{id}
+    </delete>
+
+    <delete id="deleteEdWorkExperienceByIds" parameterType="String">
+        delete from ed_work_experience where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

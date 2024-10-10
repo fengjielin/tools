@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzj.expert.mapper.EdTechnicalFieldsMapper">
+    
+    <resultMap type="EdTechnicalFields" id="EdTechnicalFieldsResult">
+        <result property="id"    column="id"    />
+        <result property="edExpertInfoId"    column="ed_expert_info_id"    />
+        <result property="edExpertInfoChangeId"    column="ed_expert_info_change_id"    />
+        <result property="firstLevel"    column="first_level"    />
+        <result property="secondLevel"    column="second_level"    />
+        <result property="thirdLevel"    column="third_level"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectEdTechnicalFieldsVo">
+        select id, ed_expert_info_id, first_level, second_level, third_level, create_time from ed_technical_fields
+    </sql>
+
+    <select id="selectEdTechnicalFieldsList" parameterType="EdTechnicalFields" resultMap="EdTechnicalFieldsResult">
+        <include refid="selectEdTechnicalFieldsVo"/>
+        <where>  
+            <if test="edExpertInfoId != null "> and ed_expert_info_id = #{edExpertInfoId}</if>
+            <if test="edExpertInfoChangeId != null "> and ed_expert_info_change_id = #{edExpertInfoChangeId}</if>
+            <if test="firstLevel != null  and firstLevel != ''"> and first_level = #{firstLevel}</if>
+            <if test="secondLevel != null  and secondLevel != ''"> and second_level = #{secondLevel}</if>
+            <if test="thirdLevel != null  and thirdLevel != ''"> and third_level = #{thirdLevel}</if>
+        </where>
+    </select>
+    
+    <select id="selectEdTechnicalFieldsById" parameterType="Integer" resultMap="EdTechnicalFieldsResult">
+        <include refid="selectEdTechnicalFieldsVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertEdTechnicalFields" parameterType="EdTechnicalFields" useGeneratedKeys="true" keyProperty="id">
+        insert into ed_technical_fields
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="edExpertInfoId != null">ed_expert_info_id,</if>
+            <if test="firstLevel != null and firstLevel != ''">first_level,</if>
+            <if test="secondLevel != null and secondLevel != ''">second_level,</if>
+            <if test="thirdLevel != null">third_level,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="edExpertInfoId != null">#{edExpertInfoId},</if>
+            <if test="firstLevel != null and firstLevel != ''">#{firstLevel},</if>
+            <if test="secondLevel != null and secondLevel != ''">#{secondLevel},</if>
+            <if test="thirdLevel != null">#{thirdLevel},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEdTechnicalFields" parameterType="EdTechnicalFields">
+        update ed_technical_fields
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="edExpertInfoId != null">ed_expert_info_id = #{edExpertInfoId},</if>
+            <if test="firstLevel != null and firstLevel != ''">first_level = #{firstLevel},</if>
+            <if test="secondLevel != null and secondLevel != ''">second_level = #{secondLevel},</if>
+            <if test="thirdLevel != null">third_level = #{thirdLevel},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteEdTechnicalFieldsById" parameterType="Integer">
+        delete from ed_technical_fields where id = #{id}
+    </delete>
+
+    <delete id="deleteEdTechnicalFieldsByIds" parameterType="String">
+        delete from ed_technical_fields where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

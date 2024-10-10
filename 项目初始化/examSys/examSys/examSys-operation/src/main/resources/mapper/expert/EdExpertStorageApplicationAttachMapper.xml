@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzj.expert.mapper.EdExpertStorageApplicationAttachMapper">
+    
+    <resultMap type="EdExpertStorageApplicationAttach" id="EdExpertStorageApplicationAttachResult">
+        <result property="id"    column="id"    />
+        <result property="attachName"    column="attach_name"    />
+        <result property="attachUrl"    column="attach_url"    />
+        <result property="attachType"    column="attach_type"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="storageApplicationId"    column="storage_application_id"    />
+        <result property="type"    column="type"    />
+    </resultMap>
+
+    <sql id="selectEdExpertStorageApplicationAttachVo">
+        select id, attach_name, attach_url, attach_type, create_time, storage_application_id,type from ed_expert_storage_application_attach
+    </sql>
+
+    <select id="selectEdExpertStorageApplicationAttachList" parameterType="EdExpertStorageApplicationAttach" resultMap="EdExpertStorageApplicationAttachResult">
+        <include refid="selectEdExpertStorageApplicationAttachVo"/>
+        <where>  
+            <if test="attachName != null  and attachName != ''"> and attach_name like concat('%', #{attachName}, '%')</if>
+            <if test="attachUrl != null  and attachUrl != ''"> and attach_url = #{attachUrl}</if>
+            <if test="attachType != null  and attachType != ''"> and attach_type = #{attachType}</if>
+            <if test="storageApplicationId != null "> and storage_application_id = #{storageApplicationId}</if>
+            <if test="type != null "> and type = #{type}</if>
+        </where>
+    </select>
+    
+    <select id="selectEdExpertStorageApplicationAttachById" parameterType="Long" resultMap="EdExpertStorageApplicationAttachResult">
+        <include refid="selectEdExpertStorageApplicationAttachVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertEdExpertStorageApplicationAttach" parameterType="EdExpertStorageApplicationAttach">
+        insert into ed_expert_storage_application_attach
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="attachName != null">attach_name,</if>
+            <if test="attachUrl != null">attach_url,</if>
+            <if test="attachType != null">attach_type,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="storageApplicationId != null">storage_application_id,</if>
+            <if test="type != null">type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="attachName != null">#{attachName},</if>
+            <if test="attachUrl != null">#{attachUrl},</if>
+            <if test="attachType != null">#{attachType},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="storageApplicationId != null">#{storageApplicationId},</if>
+            <if test="type != null">#{type},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEdExpertStorageApplicationAttach" parameterType="EdExpertStorageApplicationAttach">
+        update ed_expert_storage_application_attach
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="attachName != null">attach_name = #{attachName},</if>
+            <if test="attachUrl != null">attach_url = #{attachUrl},</if>
+            <if test="attachType != null">attach_type = #{attachType},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="storageApplicationId != null">storage_application_id = #{storageApplicationId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteEdExpertStorageApplicationAttachById" parameterType="Long">
+        delete from ed_expert_storage_application_attach where id = #{id}
+    </delete>
+
+    <delete id="deleteEdExpertStorageApplicationAttachByIds" parameterType="String">
+        delete from ed_expert_storage_application_attach where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

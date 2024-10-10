@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzj.expert.mapper.EdExpertInfoMapper">
+    
+    <resultMap type="EdExpertInfo" id="EdExpertInfoResult">
+        <result property="edExpertInfoId"    column="ed_expert_info_id"    />
+        <result property="name"    column="name"    />
+        <result property="idNumber"    column="id_number"    />
+        <result property="birthDate"    column="birth_date"    />
+        <result property="photoUrl"    column="photo_url"    />
+        <result property="workLocation"    column="work_location"    />
+        <result property="age"    column="age"    />
+        <result property="sex"    column="sex"    />
+        <result property="workUnit"    column="work_unit"    />
+        <result property="position"    column="position"    />
+        <result property="communicationAddress"    column="communication_address"    />
+        <result property="postalCode"    column="postal_code"    />
+        <result property="officePhone"    column="office_phone"    />
+        <result property="mobile"    column="mobile"    />
+        <result property="email"    column="email"    />
+        <result property="firstEducation"    column="first_education"    />
+        <result property="firstDegree"    column="first_degree"    />
+        <result property="firstMajor"    column="first_major"    />
+        <result property="firstGraduatedSchool"    column="first_graduated_school"    />
+        <result property="highestEducation"    column="highest_education"    />
+        <result property="highestDegree"    column="highest_degree"    />
+        <result property="highestMajor"    column="highest_major"    />
+        <result property="highestGraduatedSchool"    column="highest_graduated_school"    />
+        <result property="technicalTitle"    column="technical_title"    />
+        <result property="isPhdSupervisor"    column="is_phd_supervisor"    />
+        <result property="isAcademician"    column="is_academician"    />
+        <result property="enjoysSpecialAllowance"    column="enjoys_special_allowance"    />
+        <result property="currentMajor"    column="current_major"    />
+        <result property="workYears"    column="work_years"    />
+        <result property="relevantWorkYears"    column="relevant_work_years"    />
+        <result property="unitType"    column="unit_type"    />
+        <result property="familiarTechnicalFields"    column="familiar_technical_fields"    />
+        <result property="workResume"    column="work_resume"    />
+        <result property="expertiseInScienceEducation"    column="expertise_in_science_education"    />
+        <result property="recentResearchActivities"    column="recent_research_activities"    />
+        <result property="publications"    column="publications"    />
+        <result property="awards"    column="awards"    />
+        <result property="intellectualProperty"    column="intellectual_property"    />
+        <result property="unitOpinion"    column="unit_opinion"    />
+        <result property="unitStampDate"    column="unit_stamp_date"    />
+        <result property="expertCategory"    column="expert_category"    />
+        <result property="subLibrary"    column="sub_library"    />
+        <result property="status"    column="status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="userId"    column="user_id"    />
+        <result property="applicationId"    column="application_id"    />
+        <result property="expertLabel"    column="expert_label"    />
+        <result property="expertSource"    column="expert_source"    />
+    </resultMap>
+
+    <resultMap id="EdExpertInfoEdTechnicalFieldsResult" type="EdExpertInfo" extends="EdExpertInfoResult">
+        <collection property="edTechnicalFieldsList" ofType="EdTechnicalFields" column="ed_expert_info_id" select="selectEdTechnicalFieldsList" />
+    </resultMap>
+
+    <resultMap type="EdTechnicalFields" id="EdTechnicalFieldsResult">
+        <result property="id"    column="id"    />
+        <result property="edExpertInfoId"    column="ed_expert_info_id"    />
+        <result property="firstLevel"    column="first_level"    />
+        <result property="secondLevel"    column="second_level"    />
+        <result property="thirdLevel"    column="third_level"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectEdExpertInfoVo">
+        select ed_expert_info_id, name, id_number, birth_date, photo_url, work_location, age, sex, work_unit, position, communication_address, postal_code, office_phone, mobile, email, first_education, first_degree, first_major, first_graduated_school, highest_education, highest_degree, highest_major, highest_graduated_school, technical_title, is_phd_supervisor, is_academician, enjoys_special_allowance, current_major, work_years, relevant_work_years, unit_type, familiar_technical_fields, work_resume, expertise_in_science_education, recent_research_activities, publications, awards, intellectual_property, unit_opinion, unit_stamp_date, expert_category, sub_library, status, del_flag, create_by, create_time, update_by, update_time, remark, user_id, application_id,expert_label,expert_source from ed_expert_info
+    </sql>
+
+    <select id="selectEdExpertInfoList" parameterType="EdExpertInfo" resultMap="EdExpertInfoResult">
+        select distinct t1.ed_expert_info_id, t1.name, t1.id_number, t1.birth_date, t1.photo_url, t1.work_location, t1.age, t1.sex, t1.work_unit, t1.position, t1.communication_address, t1.postal_code, t1.office_phone, t1.mobile, t1.email, t1.first_education, t1.first_degree, t1.first_major, t1.first_graduated_school, t1.highest_education, t1.highest_degree, t1.highest_major, t1.highest_graduated_school, t1.technical_title, t1.is_phd_supervisor, t1.is_academician, t1.enjoys_special_allowance, t1.current_major, t1.work_years, t1.relevant_work_years, t1.unit_type, t1.familiar_technical_fields, t1.work_resume, t1.expertise_in_science_education, t1.recent_research_activities, t1.publications, t1.awards, t1.intellectual_property, t1.unit_opinion, t1.unit_stamp_date, t1.expert_category, t1.sub_library, t1.status, t1.del_flag, t1.create_by, t1.create_time, t1.update_by, t1.update_time, t1.remark, t1.user_id, t1.application_id,t1.expert_label,t1.expert_source
+        from ed_expert_info t1
+        left join ed_technical_fields t2 on t1.ed_expert_info_id = t2.ed_expert_info_id
+        <where>
+            and t1.del_flag='0'
+            <if test="extractNum != null">
+               and (select count(*) from ed_application_evaluation
+                where YEAR(update_time) = YEAR(CURRENT_DATE)
+                and is_join='1' and ed_expert_info_id = t1.ed_expert_info_id) &lt;= #{extractNum}
+            </if>
+            <if test="name != null  and name != ''"> and t1.name like concat('%', #{name}, '%')</if>
+            <if test="idNumber != null  and idNumber != ''"> and t1.id_number like CONCAT('%', #{idNumber}, '%')</if>
+            <if test="birthDate != null "> and t1.birth_date = #{birthDate}</if>
+            <if test="photoUrl != null  and photoUrl != ''"> and t1.photo_url = #{photoUrl}</if>
+            <if test="workLocation != null  and workLocation != ''">
+                and (t1.work_location LIKE
+                <foreach item="location" index="index" collection="workLocationList" open="" close="" separator=" OR work_location LIKE ">
+                    CONCAT('%', #{location}, '%')
+                </foreach>)
+             </if>
+            <if test="age != null "> and t1.age = #{age}</if>
+            <if test="sex != null  and sex != ''"> and t1.sex = #{sex}</if>
+            <if test="workUnit != null  and workUnit != ''"> and t1.work_unit = #{workUnit}</if>
+            <if test="position != null  and position != ''"> and t1.position = #{position}</if>
+            <if test="communicationAddress != null  and communicationAddress != ''"> and t1.communication_address = #{communicationAddress}</if>
+            <if test="postalCode != null  and postalCode != ''"> and t1.postal_code = #{postalCode}</if>
+            <if test="officePhone != null  and officePhone != ''"> and t1.office_phone = #{officePhone}</if>
+            <if test="mobile != null  and mobile != ''"> and t1.mobile like CONCAT('%', #{mobile}, '%')</if>
+            <if test="email != null  and email != ''"> and t1.email = #{email}</if>
+            <if test="firstEducation != null  and firstEducation != ''"> and t1.first_education = #{firstEducation}</if>
+            <if test="firstDegree != null  and firstDegree != ''"> and t1.first_degree = #{firstDegree}</if>
+            <if test="firstMajor != null  and firstMajor != ''"> and t1.first_major = #{firstMajor}</if>
+            <if test="firstGraduatedSchool != null  and firstGraduatedSchool != ''"> and t1.first_graduated_school = #{firstGraduatedSchool}</if>
+            <if test="highestEducation != null  and highestEducation != ''"> and t1.highest_education = #{highestEducation}</if>
+            <if test="highestDegree != null  and highestDegree != ''"> and t1.highest_degree = #{highestDegree}</if>
+            <if test="highestMajor != null  and highestMajor != ''"> and t1.highest_major = #{highestMajor}</if>
+            <if test="highestGraduatedSchool != null  and highestGraduatedSchool != ''"> and t1.highest_graduated_school = #{highestGraduatedSchool}</if>
+            <if test="technicalTitle != null  and technicalTitle != ''"> and t1.technical_title = #{technicalTitle}</if>
+            <if test="isPhdSupervisor != null "> and t1.is_phd_supervisor = #{isPhdSupervisor}</if>
+            <if test="isAcademician != null "> and t1.is_academician = #{isAcademician}</if>
+            <if test="enjoysSpecialAllowance != null  and enjoysSpecialAllowance != ''"> and t1.enjoys_special_allowance = #{enjoysSpecialAllowance}</if>
+            <if test="currentMajor != null  and currentMajor != ''"> and t1.current_major = #{currentMajor}</if>
+            <if test="workYears != null "> and t1.work_years = #{workYears}</if>
+            <if test="relevantWorkYears != null "> and t1.relevant_work_years = #{relevantWorkYears}</if>
+            <if test="unitType != null  and unitType != ''"> and t1.unit_type = #{unitType}</if>
+            <if test="workResume != null  and workResume != ''"> and t1.work_resume = #{workResume}</if>
+            <if test="expertiseInScienceEducation != null  and expertiseInScienceEducation != ''"> and t1.expertise_in_science_education = #{expertiseInScienceEducation}</if>
+            <if test="recentResearchActivities != null  and recentResearchActivities != ''"> and t1.recent_research_activities = #{recentResearchActivities}</if>
+            <if test="publications != null  and publications != ''"> and t1.publications = #{publications}</if>
+            <if test="awards != null  and awards != ''"> and t1.awards = #{awards}</if>
+            <if test="intellectualProperty != null  and intellectualProperty != ''"> and t1.intellectual_property = #{intellectualProperty}</if>
+            <if test="unitOpinion != null  and unitOpinion != ''"> and t1.unit_opinion = #{unitOpinion}</if>
+            <if test="unitStampDate != null "> and t1.unit_stamp_date = #{unitStampDate}</if>
+            <if test="expertCategory != null  and expertCategory != ''"> and t1.expert_category = #{expertCategory}</if>
+            <if test="subLibrary != null  and subLibrary != ''"> and t1.sub_library = #{subLibrary}</if>
+            <if test="status != null  and status != ''"> and t1.status = #{status}</if>
+            <if test="userId != null "> and t1.user_id = #{userId}</if>
+            <if test="applicationId != null "> and t1.application_id = #{applicationId}</if>
+            <if test="expertLabel != null "> and t1.expert_label = #{expertLabel}</if>
+            <if test="expertSource!= null "> and t1.expert_source = #{expertSource}</if>
+            <if test="technicalFieldsList != null  and technicalFieldsList.size>0">
+                and (t2.first_level LIKE
+                <foreach item="teachnical" index="index" collection="technicalFieldsList" open="" close=""
+                         separator=" OR t2.first_level LIKE ">
+                    CONCAT('%', #{teachnical}, '%')
+                </foreach>)
+            </if>
+        </where>
+    </select>
+    
+    <select id="selectEdExpertInfoByEdExpertInfoId" parameterType="Integer" resultMap="EdExpertInfoEdTechnicalFieldsResult">
+        select ed_expert_info_id, name, id_number, birth_date, photo_url, work_location, age, sex, work_unit, position, communication_address, postal_code, office_phone, mobile, email, first_education, first_degree, first_major, first_graduated_school, highest_education, highest_degree, highest_major, highest_graduated_school, technical_title, is_phd_supervisor, is_academician, enjoys_special_allowance, current_major, work_years, relevant_work_years, unit_type, familiar_technical_fields, work_resume, expertise_in_science_education, recent_research_activities, publications, awards, intellectual_property, unit_opinion, unit_stamp_date, expert_category, sub_library, status, del_flag, create_by, create_time, update_by, update_time, remark, user_id, application_id,expert_label,expert_source
+        from ed_expert_info
+        where ed_expert_info_id = #{edExpertInfoId} and del_flag='0'
+    </select>
+
+    <select id="selectEdTechnicalFieldsList" resultType="EdTechnicalFields" resultMap="EdTechnicalFieldsResult">
+        select id, ed_expert_info_id, first_level, second_level, third_level, create_time
+        from ed_technical_fields
+        where ed_expert_info_id = #{ed_expert_info_id}
+    </select>
+
+    <select id="selectEdExpertInfoByUserId" resultMap="EdExpertInfoResult">
+        <include refid="selectEdExpertInfoVo"/>
+        where user_id = #{userId}
+    </select>
+    <select id="selectEdExpertInfoByIdNum" resultType="com.gzzj.expert.domain.EdExpertInfo">
+        select * from ed_expert_info where del_flag='0' and id_number = #{idNumber}
+        <if test="edExpertInfoId != null and edExpertInfoId != ''">
+                and ed_expert_info_id != #{edExpertInfoId}
+         </if>
+    </select>
+
+    <insert id="insertEdExpertInfo" parameterType="EdExpertInfo" useGeneratedKeys="true" keyProperty="edExpertInfoId">
+        insert into ed_expert_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="edExpertInfoId != null and edExpertInfoId != ''">ed_expert_info_id,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="idNumber != null and idNumber != ''">id_number,</if>
+            <if test="birthDate != null">birth_date,</if>
+            <if test="photoUrl != null">photo_url,</if>
+            <if test="workLocation != null">work_location,</if>
+            <if test="age != null">age,</if>
+            <if test="sex != null">sex,</if>
+            <if test="workUnit != null and workUnit != ''">work_unit,</if>
+            <if test="position != null">position,</if>
+            <if test="communicationAddress != null">communication_address,</if>
+            <if test="postalCode != null">postal_code,</if>
+            <if test="officePhone != null">office_phone,</if>
+            <if test="mobile != null and mobile != ''">mobile,</if>
+            <if test="email != null">email,</if>
+            <if test="firstEducation != null">first_education,</if>
+            <if test="firstDegree != null">first_degree,</if>
+            <if test="firstMajor != null">first_major,</if>
+            <if test="firstGraduatedSchool != null">first_graduated_school,</if>
+            <if test="highestEducation != null">highest_education,</if>
+            <if test="highestDegree != null">highest_degree,</if>
+            <if test="highestMajor != null">highest_major,</if>
+            <if test="highestGraduatedSchool != null">highest_graduated_school,</if>
+            <if test="technicalTitle != null">technical_title,</if>
+            <if test="isPhdSupervisor != null">is_phd_supervisor,</if>
+            <if test="isAcademician != null">is_academician,</if>
+            <if test="enjoysSpecialAllowance != null">enjoys_special_allowance,</if>
+            <if test="currentMajor != null and currentMajor != ''">current_major,</if>
+            <if test="workYears != null">work_years,</if>
+            <if test="relevantWorkYears != null">relevant_work_years,</if>
+            <if test="unitType != null">unit_type,</if>
+            <if test="familiarTechnicalFields != null">familiar_technical_fields,</if>
+            <if test="workResume != null">work_resume,</if>
+            <if test="expertiseInScienceEducation != null">expertise_in_science_education,</if>
+            <if test="recentResearchActivities != null">recent_research_activities,</if>
+            <if test="publications != null">publications,</if>
+            <if test="awards != null">awards,</if>
+            <if test="intellectualProperty != null">intellectual_property,</if>
+            <if test="unitOpinion != null">unit_opinion,</if>
+            <if test="unitStampDate != null">unit_stamp_date,</if>
+            <if test="expertCategory != null">expert_category,</if>
+            <if test="subLibrary != null">sub_library,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="applicationId != null">application_id,</if>
+            <if test="expertLabel != null">expert_label,</if>
+            <if test="expertSource != null">expert_source,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="edExpertInfoId != null and edExpertInfoId != ''">#{edExpertInfoId},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="idNumber != null and idNumber != ''">#{idNumber},</if>
+            <if test="birthDate != null">#{birthDate},</if>
+            <if test="photoUrl != null">#{photoUrl},</if>
+            <if test="workLocation != null">#{workLocation},</if>
+            <if test="age != null">#{age},</if>
+            <if test="sex != null">#{sex},</if>
+            <if test="workUnit != null and workUnit != ''">#{workUnit},</if>
+            <if test="position != null">#{position},</if>
+            <if test="communicationAddress != null">#{communicationAddress},</if>
+            <if test="postalCode != null">#{postalCode},</if>
+            <if test="officePhone != null">#{officePhone},</if>
+            <if test="mobile != null and mobile != ''">#{mobile},</if>
+            <if test="email != null">#{email},</if>
+            <if test="firstEducation != null">#{firstEducation},</if>
+            <if test="firstDegree != null">#{firstDegree},</if>
+            <if test="firstMajor != null">#{firstMajor},</if>
+            <if test="firstGraduatedSchool != null">#{firstGraduatedSchool},</if>
+            <if test="highestEducation != null">#{highestEducation},</if>
+            <if test="highestDegree != null">#{highestDegree},</if>
+            <if test="highestMajor != null">#{highestMajor},</if>
+            <if test="highestGraduatedSchool != null">#{highestGraduatedSchool},</if>
+            <if test="technicalTitle != null">#{technicalTitle},</if>
+            <if test="isPhdSupervisor != null">#{isPhdSupervisor},</if>
+            <if test="isAcademician != null">#{isAcademician},</if>
+            <if test="enjoysSpecialAllowance != null">#{enjoysSpecialAllowance},</if>
+            <if test="currentMajor != null and currentMajor != ''">#{currentMajor},</if>
+            <if test="workYears != null">#{workYears},</if>
+            <if test="relevantWorkYears != null">#{relevantWorkYears},</if>
+            <if test="unitType != null">#{unitType},</if>
+            <if test="familiarTechnicalFields != null">#{familiarTechnicalFields},</if>
+            <if test="workResume != null">#{workResume},</if>
+            <if test="expertiseInScienceEducation != null">#{expertiseInScienceEducation},</if>
+            <if test="recentResearchActivities != null">#{recentResearchActivities},</if>
+            <if test="publications != null">#{publications},</if>
+            <if test="awards != null">#{awards},</if>
+            <if test="intellectualProperty != null">#{intellectualProperty},</if>
+            <if test="unitOpinion != null">#{unitOpinion},</if>
+            <if test="unitStampDate != null">#{unitStampDate},</if>
+            <if test="expertCategory != null">#{expertCategory},</if>
+            <if test="subLibrary != null">#{subLibrary},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="applicationId != null">#{applicationId},</if>
+            <if test="expertLabel != null">#{expertLabel},</if>
+            <if test="expertSource != null">#{expertSource},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEdExpertInfo" parameterType="EdExpertInfo">
+        update ed_expert_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="idNumber != null and idNumber != ''">id_number = #{idNumber},</if>
+            <if test="birthDate != null">birth_date = #{birthDate},</if>
+            <if test="photoUrl != null">photo_url = #{photoUrl},</if>
+            <if test="workLocation != null">work_location = #{workLocation},</if>
+            <if test="age != null">age = #{age},</if>
+            <if test="sex != null">sex = #{sex},</if>
+            <if test="workUnit != null and workUnit != ''">work_unit = #{workUnit},</if>
+            <if test="position != null">position = #{position},</if>
+            <if test="communicationAddress != null">communication_address = #{communicationAddress},</if>
+            <if test="postalCode != null">postal_code = #{postalCode},</if>
+            <if test="officePhone != null">office_phone = #{officePhone},</if>
+            <if test="mobile != null and mobile != ''">mobile = #{mobile},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="firstEducation != null">first_education = #{firstEducation},</if>
+            <if test="firstDegree != null">first_degree = #{firstDegree},</if>
+            <if test="firstMajor != null">first_major = #{firstMajor},</if>
+            <if test="firstGraduatedSchool != null">first_graduated_school = #{firstGraduatedSchool},</if>
+            <if test="highestEducation != null">highest_education = #{highestEducation},</if>
+            <if test="highestDegree != null">highest_degree = #{highestDegree},</if>
+            <if test="highestMajor != null">highest_major = #{highestMajor},</if>
+            <if test="highestGraduatedSchool != null">highest_graduated_school = #{highestGraduatedSchool},</if>
+            <if test="technicalTitle != null">technical_title = #{technicalTitle},</if>
+            <if test="isPhdSupervisor != null">is_phd_supervisor = #{isPhdSupervisor},</if>
+            <if test="isAcademician != null">is_academician = #{isAcademician},</if>
+            <if test="enjoysSpecialAllowance != null">enjoys_special_allowance = #{enjoysSpecialAllowance},</if>
+            <if test="currentMajor != null and currentMajor != ''">current_major = #{currentMajor},</if>
+            <if test="workYears != null">work_years = #{workYears},</if>
+            <if test="relevantWorkYears != null">relevant_work_years = #{relevantWorkYears},</if>
+            <if test="unitType != null">unit_type = #{unitType},</if>
+            <if test="familiarTechnicalFields != null">familiar_technical_fields = #{familiarTechnicalFields},</if>
+            <if test="workResume != null">work_resume = #{workResume},</if>
+            <if test="expertiseInScienceEducation != null">expertise_in_science_education = #{expertiseInScienceEducation},</if>
+            <if test="recentResearchActivities != null">recent_research_activities = #{recentResearchActivities},</if>
+            <if test="publications != null">publications = #{publications},</if>
+            <if test="awards != null">awards = #{awards},</if>
+            <if test="intellectualProperty != null">intellectual_property = #{intellectualProperty},</if>
+            <if test="unitOpinion != null">unit_opinion = #{unitOpinion},</if>
+            <if test="unitStampDate != null">unit_stamp_date = #{unitStampDate},</if>
+            <if test="expertCategory != null">expert_category = #{expertCategory},</if>
+            <if test="subLibrary != null">sub_library = #{subLibrary},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="applicationId != null">application_id = #{applicationId},</if>
+            <if test="expertLabel != null">expert_label = #{expertLabel},</if>
+            <if test="expertSource != null">expert_source = #{expertSource},</if>
+        </trim>
+        where ed_expert_info_id = #{edExpertInfoId}
+    </update>
+
+    <delete id="deleteEdExpertInfoByEdExpertInfoId" parameterType="Integer">
+        delete from ed_expert_info where ed_expert_info_id = #{edExpertInfoId}
+    </delete>
+
+    <delete id="deleteEdExpertInfoByEdExpertInfoIds" parameterType="String">
+        update ed_expert_info set del_flag='2' where ed_expert_info_id in
+        <foreach item="edExpertInfoId" collection="array" open="(" separator="," close=")">
+            #{edExpertInfoId}
+        </foreach>
+    </delete>
+    
+    <delete id="deleteEdTechnicalFieldsByEdExpertInfoIds" parameterType="String">
+        delete from ed_technical_fields where ed_expert_info_id in 
+        <foreach item="edExpertInfoId" collection="array" open="(" separator="," close=")">
+            #{edExpertInfoId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteEdTechnicalFieldsByEdExpertInfoId" parameterType="Integer">
+        delete from ed_technical_fields where ed_expert_info_id = #{edExpertInfoId}
+    </delete>
+
+    <insert id="batchEdTechnicalFields">
+        insert into ed_technical_fields( id, ed_expert_info_id, first_level, second_level, third_level, create_time) values
+        <foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.id}, #{item.edExpertInfoId}, #{item.firstLevel}, #{item.secondLevel}, #{item.thirdLevel}, #{item.createTime})
+        </foreach>
+    </insert>
+
+    <delete id="deleteEdWorkExperienceByEdExpertInfoIds" parameterType="String">
+        delete from ed_work_experience where ed_expert_info_id in
+        <foreach item="edExpertInfoId" collection="array" open="(" separator="," close=")">
+            #{edExpertInfoId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteEdWorkExperienceByEdExpertInfoId" parameterType="Integer">
+        delete from ed_work_experience where ed_expert_info_id = #{edExpertInfoId}
+    </delete>
+
+    <insert id="batchEdWorkExperience">
+        insert into ed_work_experience( id, ed_expert_info_id, time_period, organization, position_held, field_worked, create_time) values
+        <foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.id}, #{item.edExpertInfoId}, #{item.timePeriod}, #{item.organization}, #{item.positionHeld}, #{item.fieldWorked}, #{item.createTime})
+        </foreach>
+    </insert>
+</mapper>

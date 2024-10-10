@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzj.expert.mapper.EdExpertAccountChangeMapper">
+    
+    <resultMap type="EdExpertAccountChange" id="EdExpertAccountChangeResult">
+        <result property="id"    column="id"    />
+        <result property="changeInfo"    column="change_info"    />
+        <result property="expertInfoId"    column="expert_info_id"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectEdExpertAccountChangeVo">
+        select id, change_info, expert_info_id, create_time from ed_expert_account_change
+    </sql>
+
+    <select id="selectEdExpertAccountChangeList" parameterType="EdExpertAccountChange" resultMap="EdExpertAccountChangeResult">
+        <include refid="selectEdExpertAccountChangeVo"/>
+        <where>  
+            <if test="changeInfo != null  and changeInfo != ''"> and change_info = #{changeInfo}</if>
+            <if test="expertInfoId != null "> and expert_info_id = #{expertInfoId}</if>
+        </where>
+    </select>
+    
+    <select id="selectEdExpertAccountChangeById" parameterType="Long" resultMap="EdExpertAccountChangeResult">
+        <include refid="selectEdExpertAccountChangeVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertEdExpertAccountChange" parameterType="EdExpertAccountChange" useGeneratedKeys="true" keyProperty="id">
+        insert into ed_expert_account_change
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="changeInfo != null">change_info,</if>
+            <if test="expertInfoId != null">expert_info_id,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="changeInfo != null">#{changeInfo},</if>
+            <if test="expertInfoId != null">#{expertInfoId},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEdExpertAccountChange" parameterType="EdExpertAccountChange">
+        update ed_expert_account_change
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="changeInfo != null">change_info = #{changeInfo},</if>
+            <if test="expertInfoId != null">expert_info_id = #{expertInfoId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteEdExpertAccountChangeById" parameterType="Long">
+        delete from ed_expert_account_change where id = #{id}
+    </delete>
+
+    <delete id="deleteEdExpertAccountChangeByIds" parameterType="String">
+        delete from ed_expert_account_change where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,177 @@
+ul.menu {
+  padding: 0;
+  list-style: none;
+  width: 100%;
+  font-family: "Century Gothic";
+  clear: both;
+  display: table;
+}
+
+ul.menu .list {
+  font-size: 14px;
+  border-bottom: 1px solid #fff;
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  height: 50px;
+  vertical-align: sub;
+  background: #2783d6;
+  clear: both;
+  overflow: initial;
+}
+
+ul.menu .list-cell-arrow::before {
+  content: " ";
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+  background-color: #166bb6;
+  font-family: FontAwesome;
+  position: absolute;
+  right: 17px;
+  top: 10px;
+  padding: 0px 5px;
+  color: #fff;
+  border-radius: 4px;
+  z-index: 0;
+}
+
+ul.menu .list-cell-arrow:after {
+  content: " ";
+  height: 12px;
+  width: 12px;
+  border-width: 2px 2px 0 0;
+  border-color: #c0c0c0;
+  border-style: solid;
+  transform: matrix(0.5, 0.5, -0.5, 0.5, 0, 0);
+  position: absolute;
+  top: 50%;
+  margin-top: -6px;
+  right: 28px;
+  z-index: 1;
+  transition: 300ms all;
+}
+ul.menu .list-cell-arrow.menu-active:after {
+  content: " ";
+  height: 12px;
+  width: 12px;
+  border-width: 2px 2px 0 0;
+  border-color: #c0c0c0;
+  border-style: solid;
+  transform: matrix(0.5, -0.5, 0.5, 0.5, 1.5, 2);
+  position: absolute;
+  top: 50%;
+  margin-top: -6px;
+  right: 28px;
+  z-index: 1;
+}
+
+ul.menu .list .item {
+  cursor: pointer;
+}
+
+ul.menu .list .first-item {
+  text-decoration: none;
+  color: #fff;
+  padding: 17px 0px 17px 17px;
+  display: block;
+  height: 100%;
+  box-sizing: border-box;
+  font-weight: 600;
+}
+
+ul.menu .list .first-item:hover {
+  background-color: #005ba7;
+  /* #f08f1a */
+  transition: 300ms all;
+  color: #fff;
+}
+
+ul.menu .list .items {
+  height: 0px;
+  overflow: hidden;
+}
+
+ul.menu .list .items .second-item {
+  color: #000;
+  padding: 14px;
+}
+
+ul.menu .list .items .second-item:hover {
+  background-color: #005ba7;
+  color: #fff;
+  transition: 300ms all;
+}
+
+ul.menu .list .items .second-item.a-menu-active {
+  color: #fff;
+}
+
+ul.menu .list:last-child {
+  border-bottom: none;
+}
+
+ul.menu .menu-active {
+  background-color: #005ba7;
+}
+ul.menu .menu-active > .items {
+  display: block;
+  background: #fff;
+  padding: 0px;
+  height: auto;
+  color: #000;
+  transition-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+  transition: all 200ms;
+  clear: both;
+  float: left;
+  width: 100%;
+
+  position: absolute;
+  z-index: 9;
+}
+
+ul.menu .menu-active > .items li {
+  padding: 0px;
+  border-bottom: 1px solid #ccc;
+  list-style: none;
+}
+
+ul.menu .menu-active > .items li:last-child {
+  border-color: transparent;
+  padding-bottom: 0px;
+}
+
+ul.menu .menu-active > .items .menu-active > .items {
+  background-color: #2f4b67;
+}
+
+ul.menu .menu-active > .second-item {
+  color: #46efa4;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+ul.menu .menu-active .list {
+  background: #697d92;
+}
+
+ul.menu .menu-active .list .item {
+  padding: 17px 0px 17px 45px;
+}
+
+.a-menu-active:link {
+  background-color: #005ba7;
+}
+
+.a-menu-active:visited {
+  background-color: #005ba7;
+}
+
+.a-menu-active:hover {
+  background-color: #005ba7;
+}
+
+.a-menu-active:menu-active {
+  background-color: #005ba7;
+}

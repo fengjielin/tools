@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzzj.expert.mapper.EdExpertStorageApplicationMapper">
+    
+    <resultMap type="EdExpertStorageApplication" id="EdExpertStorageApplicationResult">
+        <result property="edExpertStorageApplicationId"    column="ed_expert_storage_application_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="applicationDate"    column="application_date"    />
+        <result property="status"    column="status"    />
+        <result property="applicationFeedback"    column="application_feedback"    />
+        <result property="supportingDocuments"    column="supporting_documents"    />
+        <result property="reviewerId"    column="reviewer_id"    />
+        <result property="reviewDate"    column="review_date"    />
+        <result property="reviewComments"    column="review_comments"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <resultMap id="EdExpertStorageApplicationEdExpertInfoResult" type="EdExpertStorageApplication" extends="EdExpertStorageApplicationResult">
+    </resultMap>
+
+    <resultMap type="EdExpertInfo" id="EdExpertInfoResult">
+        <result property="edExpertInfoId"    column="ed_expert_info_id"    />
+        <result property="name"    column="name"    />
+        <result property="idNumber"    column="id_number"    />
+        <result property="birthDate"    column="birth_date"    />
+        <result property="photoUrl"    column="photo_url"    />
+        <result property="workLocation"    column="work_location"    />
+        <result property="age"    column="age"    />
+        <result property="sex"    column="sex"    />
+        <result property="workUnit"    column="work_unit"    />
+        <result property="position"    column="position"    />
+        <result property="communicationAddress"    column="communication_address"    />
+        <result property="postalCode"    column="postal_code"    />
+        <result property="officePhone"    column="office_phone"    />
+        <result property="mobile"    column="mobile"    />
+        <result property="email"    column="email"    />
+        <result property="firstEducation"    column="first_education"    />
+        <result property="firstDegree"    column="first_degree"    />
+        <result property="firstMajor"    column="first_major"    />
+        <result property="firstGraduatedSchool"    column="first_graduated_school"    />
+        <result property="highestEducation"    column="highest_education"    />
+        <result property="highestDegree"    column="highest_degree"    />
+        <result property="highestMajor"    column="highest_major"    />
+        <result property="highestGraduatedSchool"    column="highest_graduated_school"    />
+        <result property="technicalTitle"    column="technical_title"    />
+        <result property="isPhdSupervisor"    column="is_phd_supervisor"    />
+        <result property="isAcademician"    column="is_academician"    />
+        <result property="enjoysSpecialAllowance"    column="enjoys_special_allowance"    />
+        <result property="currentMajor"    column="current_major"    />
+        <result property="workYears"    column="work_years"    />
+        <result property="relevantWorkYears"    column="relevant_work_years"    />
+        <result property="unitType"    column="unit_type"    />
+        <result property="familiarTechnicalFields"    column="familiar_technical_fields"    />
+        <result property="workResume"    column="work_resume"    />
+        <result property="expertiseInScienceEducation"    column="expertise_in_science_education"    />
+        <result property="recentResearchActivities"    column="recent_research_activities"    />
+        <result property="publications"    column="publications"    />
+        <result property="awards"    column="awards"    />
+        <result property="intellectualProperty"    column="intellectual_property"    />
+        <result property="unitOpinion"    column="unit_opinion"    />
+        <result property="unitStampDate"    column="unit_stamp_date"    />
+        <result property="expertCategory"    column="expert_category"    />
+        <result property="subLibrary"    column="sub_library"    />
+        <result property="status"    column="status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="userId"    column="user_id"    />
+        <result property="applicationId"    column="application_id"    />
+    </resultMap>
+
+    <sql id="selectEdExpertStorageApplicationVo">
+        select ed_expert_storage_application_id, user_id, application_date, status, application_feedback, supporting_documents, reviewer_id, review_date, review_comments, del_flag, create_by, create_time, update_by, update_time from ed_expert_storage_application
+    </sql>
+
+    <select id="selectEdExpertStorageApplicationList" parameterType="EdExpertStorageApplication" resultMap="EdExpertStorageApplicationResult">
+        <include refid="selectEdExpertStorageApplicationVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="applicationDate != null "> and application_date = #{applicationDate}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="applicationFeedback != null  and applicationFeedback != ''"> and application_feedback = #{applicationFeedback}</if>
+            <if test="supportingDocuments != null  and supportingDocuments != ''"> and supporting_documents = #{supportingDocuments}</if>
+            <if test="reviewerId != null "> and reviewer_id = #{reviewerId}</if>
+            <if test="reviewDate != null "> and review_date = #{reviewDate}</if>
+            <if test="reviewComments != null  and reviewComments != ''"> and review_comments = #{reviewComments}</if>
+        </where>
+        order by application_date desc
+    </select>
+    
+    <select id="selectEdExpertStorageApplicationByEdExpertStorageApplicationId" parameterType="Integer" resultMap="EdExpertStorageApplicationEdExpertInfoResult">
+        select ed_expert_storage_application_id, user_id, application_date, status, application_feedback, supporting_documents, reviewer_id, review_date, review_comments, del_flag, create_by, create_time, update_by, update_time
+        from ed_expert_storage_application
+        where ed_expert_storage_application_id = #{edExpertStorageApplicationId}
+    </select>
+
+    <select id="selectEdExpertInfoList" resultType="EdExpertInfo" resultMap="EdExpertInfoResult">
+        select ed_expert_info_id, name, id_number, birth_date, photo_url, work_location, age, sex, work_unit, position, communication_address, postal_code, office_phone, mobile, email, first_education, first_degree, first_major, first_graduated_school, highest_education, highest_degree, highest_major, highest_graduated_school, technical_title, is_phd_supervisor, is_academician, enjoys_special_allowance, current_major, work_years, relevant_work_years, unit_type, familiar_technical_fields, work_resume, expertise_in_science_education, recent_research_activities, publications, awards, intellectual_property, unit_opinion, unit_stamp_date, expert_category, sub_library, status, del_flag, create_by, create_time, update_by, update_time, remark, user_id, application_id
+        from ed_expert_info
+        where application_id = #{application_id}
+    </select>
+    <select id="getCurYearUseNum" resultType="java.lang.Integer">
+        select count(*) from ed_application_evaluation
+             where YEAR(update_time) = YEAR(CURRENT_DATE)
+        and is_join='1' and ed_expert_info_id = #{edExpertInfoId}
+    </select>
+    <select id="getTotalUseNum" resultType="java.lang.Integer">
+        select count(*) from ed_application_evaluation where is_join='1' and ed_expert_info_id = #{edExpertInfoId}
+    </select>
+    <select id="getAssessScore" resultType="java.lang.Double">
+        select ROUND(avg(score),2) score from ed_application_evaluation where is_join='1' and ed_expert_info_id = #{edExpertInfoId}
+    </select>
+
+    <insert id="insertEdExpertStorageApplication" parameterType="EdExpertStorageApplication" useGeneratedKeys="true" keyProperty="edExpertStorageApplicationId">
+        insert into ed_expert_storage_application
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="applicationDate != null">application_date,</if>
+            <if test="status != null">status,</if>
+            <if test="applicationFeedback != null and applicationFeedback != ''">application_feedback,</if>
+            <if test="supportingDocuments != null and supportingDocuments != ''">supporting_documents,</if>
+            <if test="reviewerId != null">reviewer_id,</if>
+            <if test="reviewDate != null">review_date,</if>
+            <if test="reviewComments != null">review_comments,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="applicationDate != null">#{applicationDate},</if>
+            <if test="status != null">#{status},</if>
+            <if test="applicationFeedback != null and applicationFeedback != ''">#{applicationFeedback},</if>
+            <if test="supportingDocuments != null and supportingDocuments != ''">#{supportingDocuments},</if>
+            <if test="reviewerId != null">#{reviewerId},</if>
+            <if test="reviewDate != null">#{reviewDate},</if>
+            <if test="reviewComments != null">#{reviewComments},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEdExpertStorageApplication" parameterType="EdExpertStorageApplication">
+        update ed_expert_storage_application
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="applicationDate != null">application_date = #{applicationDate},</if>
+            <if test="status != null">status = #{status},</if>
+            application_feedback = #{applicationFeedback},
+            <if test="supportingDocuments != null and supportingDocuments != ''">supporting_documents = #{supportingDocuments},</if>
+            <if test="reviewerId != null">reviewer_id = #{reviewerId},</if>
+            <if test="reviewDate != null">review_date = #{reviewDate},</if>
+            <if test="reviewComments != null">review_comments = #{reviewComments},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where ed_expert_storage_application_id = #{edExpertStorageApplicationId}
+    </update>
+
+    <delete id="deleteEdExpertStorageApplicationByEdExpertStorageApplicationId" parameterType="Integer">
+        delete from ed_expert_storage_application where ed_expert_storage_application_id = #{edExpertStorageApplicationId}
+    </delete>
+
+    <delete id="deleteEdExpertStorageApplicationByEdExpertStorageApplicationIds" parameterType="String">
+        delete from ed_expert_storage_application where ed_expert_storage_application_id in 
+        <foreach item="edExpertStorageApplicationId" collection="array" open="(" separator="," close=")">
+            #{edExpertStorageApplicationId}
+        </foreach>
+    </delete>
+    
+    <delete id="deleteEdExpertInfoByApplicationIds" parameterType="String">
+        delete from ed_expert_info where application_id in 
+        <foreach item="applicationId" collection="array" open="(" separator="," close=")">
+            #{applicationId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteEdExpertInfoByApplicationId" parameterType="Integer">
+        delete from ed_expert_info where application_id = #{applicationId}
+    </delete>
+
+    <insert id="batchEdExpertInfo">
+        insert into ed_expert_info( ed_expert_info_id, name, id_number, birth_date, photo_url, work_location, age, sex, work_unit, position, communication_address, postal_code, office_phone, mobile, email, first_education, first_degree, first_major, first_graduated_school, highest_education, highest_degree, highest_major, highest_graduated_school, technical_title, is_phd_supervisor, is_academician, enjoys_special_allowance, current_major, work_years, relevant_work_years, unit_type, familiar_technical_fields, work_resume, expertise_in_science_education, recent_research_activities, publications, awards, intellectual_property, unit_opinion, unit_stamp_date, expert_category, sub_library, status, del_flag, create_by, create_time, update_by, update_time, remark, user_id, application_id) values
+        <foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.edExpertInfoId}, #{item.name}, #{item.idNumber}, #{item.birthDate}, #{item.photoUrl}, #{item.workLocation}, #{item.age}, #{item.sex}, #{item.workUnit}, #{item.position}, #{item.communicationAddress}, #{item.postalCode}, #{item.officePhone}, #{item.mobile}, #{item.email}, #{item.firstEducation}, #{item.firstDegree}, #{item.firstMajor}, #{item.firstGraduatedSchool}, #{item.highestEducation}, #{item.highestDegree}, #{item.highestMajor}, #{item.highestGraduatedSchool}, #{item.technicalTitle}, #{item.isPhdSupervisor}, #{item.isAcademician}, #{item.enjoysSpecialAllowance}, #{item.currentMajor}, #{item.workYears}, #{item.relevantWorkYears}, #{item.unitType}, #{item.familiarTechnicalFields}, #{item.workResume}, #{item.expertiseInScienceEducation}, #{item.recentResearchActivities}, #{item.publications}, #{item.awards}, #{item.intellectualProperty}, #{item.unitOpinion}, #{item.unitStampDate}, #{item.expertCategory}, #{item.subLibrary}, #{item.status}, #{item.delFlag}, #{item.createBy}, #{item.createTime}, #{item.updateBy}, #{item.updateTime}, #{item.remark}, #{item.userId}, #{item.applicationId})
+        </foreach>
+    </insert>
+
+    <delete id="deleteEdExpertStorageApplicationAttachByStorageApplicationIds" parameterType="String">
+        delete from ed_expert_storage_application_attach where storage_application_id in
+        <foreach item="storageApplicationId" collection="array" open="(" separator="," close=")">
+            #{storageApplicationId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteEdExpertStorageApplicationAttachByStorageApplicationId" parameterType="Integer">
+        delete from ed_expert_storage_application_attach where storage_application_id = #{storageApplicationId}
+    </delete>
+    <delete id="deleteEdExpertStorageApplicationAttachByStorageApplicationIdAndType">
+        delete from ed_expert_storage_application_attach where storage_application_id = #{storageApplicationId} and type = #{type}
+    </delete>
+
+    <insert id="batchEdExpertStorageApplicationAttach">
+        insert into ed_expert_storage_application_attach( id, attach_name, attach_url, attach_type, create_time, storage_application_id,type) values
+        <foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.id}, #{item.attachName}, #{item.attachUrl}, #{item.attachType}, #{item.createTime}, #{item.storageApplicationId}, #{item.type})
+        </foreach>
+    </insert>
+</mapper>
