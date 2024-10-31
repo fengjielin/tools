@@ -7,53 +7,20 @@
             {{ item.chapterName }}
           </div>
           <div class="resource-item">
-            <div
-              v-for="(rItem, rIndex) in item.resources"
-              :key="rIndex"
-              @click="showResource(rItem, item)"
-            >
-              <Tooltip
-                :content="rItem.resourceName"
-                transfer
-                placement="top"
-                max-width="250"
-              >
-                <span
-                  class="iconfont icon-excel"
-                  style="color: #00c26e"
-                  v-if="rItem.suffix == 'xls'"
-                ></span>
-                <span
-                  class="iconfont icon-PPT"
-                  style="color: #ff9914"
-                  v-else-if="rItem.suffix == 'ppt'"
-                ></span>
-                <span
-                  class="iconfont icon-PDF"
-                  style="color: #ff4e4e"
-                  v-else-if="rItem.suffix == 'pdf'"
-                ></span>
-                <span
-                  class="iconfont icon-word"
-                  style="color: #5784ff"
-                  v-else-if="rItem.suffix == 'doc'"
-                ></span>
-                <span
-                  class="iconfont icon-video"
-                  style="color: #855aff"
-                  v-else-if="rItem.suffix == 'mp4'"
-                ></span>
-                <span
-                  class="iconfont icon-pic"
-                  style="color: #7176ff"
-                  v-else-if="rItem.suffix == 'img'"
-                ></span>
+            <div v-for="(rItem, rIndex) in item.resources" :key="rIndex" @click="showResource(rItem, item)">
+              <Tooltip :content="rItem.resourceName" transfer placement="top" max-width="250">
+                <span class="iconfont icon-excel" style="color: #00c26e" v-if="rItem.suffix == 'xls'"></span>
+                <span class="iconfont icon-PPT" style="color: #ff9914" v-else-if="rItem.suffix == 'ppt'"></span>
+                <span class="iconfont icon-PDF" style="color: #ff4e4e" v-else-if="rItem.suffix == 'pdf'"></span>
+                <span class="iconfont icon-word" style="color: #5784ff" v-else-if="rItem.suffix == 'doc'"></span>
+                <span class="iconfont icon-video" style="color: #855aff" v-else-if="rItem.suffix == 'mp4'"></span>
+                <span class="iconfont icon-pic" style="color: #7176ff" v-else-if="rItem.suffix == 'img'"></span>
               </Tooltip>
             </div>
           </div>
         </div>
         <template v-for="(c, i) of item.children">
-          <resource-item :key="i" :item="c" class="children-level" />
+          <resource-item :key="i" :item="c" class="children-level" v-if="true" />
         </template>
       </li>
     </ul>
