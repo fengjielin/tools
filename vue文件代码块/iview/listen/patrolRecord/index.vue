@@ -32,7 +32,7 @@
 <script>
   import patrolRecordDetailsModal from '../components/patrolRecordDetailsModal.vue';
   export default {
-    name: 'patrolRecord',
+    name: 'patrolRecord', 
     components: { patrolRecordDetailsModal },
     data() {
       return {
