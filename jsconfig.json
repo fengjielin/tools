@@ -1,0 +1,21 @@
+{
+  /**
+   * 目录中存在jsconfig.json文件时，表明该目录是 JavaScript 项目的根目录。
+   * jsconfig.json文件指定了根文件以及 JavaScript 语言服务 提供的功能选项
+   * 个人配置，团队协作时此文件(jsconfig.json)要加入gitignore
+   */
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"], // vscode 引入“@xx/xx”此类文件无法点击跳转
+      "@global/*": ["src/global/*"], //相当于适配路径:"@global/views/index"
+      "@committee/*": ["src/huayang-committee/*"],
+      "@distribute/*": ["src/huayang-distribute/*"],
+      "@member/*": ["src/huayang-member/*"]
+    },
+    "target": "ES6",
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}
