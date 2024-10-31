@@ -10,8 +10,10 @@
       :on-success="handleSuccess"
       :on-remove="handleRemove"
       :on-format-error="formatError"
+      :on-error="handleError"
       :format="format"
       :data="paramsData"
+      :headers="headers"
       v-if="isDel"
     >
       <slot>
@@ -28,7 +30,7 @@
         <template v-if="item.status === 'finished'">
           <div class="upload_list-cover">
             <div class="ellipsis">
-              <span v-if="item" target="_blank" :href="interfaceUrl + item.attachUrl" @click="showDetails(item)" class="attach_name">
+              <span v-if="item" target="_blank" :href="interfaceUrl + item.attachUrl" @click="checkFile(item)" class="attach_name">
                 {{ item ? item.attachName : '' }}
               </span>
             </div>
@@ -150,6 +152,10 @@
         tipModal: false,
         tipTitle: '',
         tipContent: '',
+
+        headers: {
+          Authorization: `Bearer ${this.$store.state.jwt.token}`,
+        },
       };
     },
     created() {},
@@ -169,7 +175,7 @@
       tipClose() {
         this.tipModal = false;
       },
-      showDetails(row) {
+      checkFile(row) {
         // this.title = `文档详情 (${row.attachName})`;
         // this.detailsData = row;
         // this.detailsModal = true;
@@ -179,8 +185,9 @@
         // } else if (!this.isXls) {
         //   this.getDoc(row.attachId);
         // }
-        let url = this.interfaceUrl + row.attachUrl;
-        window.open(url);
+        this.$emit('checkFile', row);
+        // let url = this.interfaceUrl + row.attachUrl;
+        // window.open(url);
       },
       detailsClose() {
         this.detailsModal = false;
@@ -259,10 +266,10 @@
       },
       formatError() {
         this.tipContent = `仅支持上传${this.format}格式的文件`;
-        if (this.format.includes('mp4')) {
-          let videoTip = `且上传的视频文件时长不能超过${this.videoSize}分钟`;
-          this.tipContent = this.tipContent + videoTip;
-        }
+        // if (this.format.includes('mp4')) {
+        //   let videoTip = `且上传的视频文件时长不能超过${this.videoSize}分钟`;
+        //   this.tipContent = this.tipContent + videoTip;
+        // }
         // this.$Modal.error({
         //   title: '提示',
         //   content: '仅支持上传 ' + this.format + ' 格式的文件，且上传文件大小不能超过' + this.size + 'Mb',
@@ -318,6 +325,10 @@
         this.$emit('setPercentage', this.percentage);
         this.$emit('setShowProgress', false);
         this.$emit('setSpin', false);
+      },
+      handleError(error, file, fileList) {
+        console.error({ error });
+        this.$Message.error(`上传失败，失败原因：${error.message}`);
       },
       // 上传结束处理
       uploadedSuccessfully() {

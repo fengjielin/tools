@@ -4,14 +4,17 @@
       :multiple="isMultiple"
       ref="uploadRefs"
       :show-upload-list="false"
+      :default-file-list="defaultFileList"
       :action="uploadUrl"
       :on-progress="handleProgress"
       :before-upload="handleBeforeUpload"
       :on-success="handleSuccess"
       :on-remove="handleRemove"
       :on-format-error="formatError"
+      :on-error="handleError"
       :format="format"
-			:data="paramsData"
+      :data="paramsData"
+      :headers="headers"
     >
       <slot></slot>
     </Upload>
@@ -19,7 +22,6 @@
       {{ '仅支持上传 ' + this.format + ' 格式的文件，且上传文件大小不能超过' + this.size + 'Mb' }}
     </div>
     <div v-if="showUploadList" class="upload-list-wrapper">
-      <Progress v-if="showProgress" :percent="percentage" :stroke-width="5"></Progress>
       <div class="upload_list" v-for="(item, index) in uploadListTemp" :key="index">
         <template v-if="item.status === 'finished'">
           <div class="upload_list-cover">
@@ -34,7 +36,9 @@
             </div>
           </div>
         </template>
-        <template v-else></template>
+        <template v-else>
+          <Progress v-if="item.showProgress" :percent="parseInt(item.percentage)" :stroke-width="5"></Progress>
+        </template>
       </div>
     </div>
   </div>
@@ -42,7 +46,7 @@
 
 <script>
   export default {
-    name: 'MyUpload',
+    name: 'MyUpload', // 2024-10-29
     props: {
       // 上传的url
       uploadUrl: {
@@ -51,6 +55,11 @@
       },
       // 上传文件的列表
       uploadList: {
+        type: Array,
+        default: () => [],
+      },
+      // 这个默认列表为静态的初始化数据，后续不要动态改变，因为在后面存在一下赋值，导致Upload组件内出现fileList的uid对不上的问题
+      defaultFileList: {
         type: Array,
         default: () => [],
       },
@@ -79,15 +88,15 @@
         type: Boolean,
         default: false,
       },
-			// 上传时附带的额外参数
-			paramsData: {
-				type: Object,
-				default: () => {
-					return {}
-				}
-			},
-			// 文件列表是否可删除
-			isDel: {
+      // 上传时附带的额外参数
+      paramsData: {
+        type: Object,
+        default: () => {
+          return {};
+        },
+      },
+      // 文件列表是否可删除
+      isDel: {
         type: Boolean,
         default: true,
       },
@@ -104,14 +113,17 @@
         isPdf: false,
 
         fileTemp: [], // 上传前将上传的File对象保存起来
+        headers: {
+          Authorization: `Bearer ${this.$store.state.jwt.token}`,
+        },
       };
     },
     created() {},
     mounted() {},
     watch: {
-      uploadList(val) {
-        this.uploadListTemp = val;
-      },
+      // uploadList(val) {
+      //   this.uploadListTemp = val;
+      // },
     },
     computed: {},
     methods: {
@@ -160,7 +172,8 @@
       },
 
       // 上传 statrt
-      handleProgress(progressEvent) {
+      handleProgress(progressEvent, file, fileList) {
+        // console.log(file, fileList);
         this.showProgress = true;
         this.$emit('setShowProgress', true);
         this.$emit('setSpin', true);
@@ -175,6 +188,10 @@
           this.$Message.warning('上传文件大小不能超过' + this.size + 'Mb');
           return false;
         }
+
+        // 2024-10-29 将文件列表对象的引用地址赋值为上传组件中绑定的对象，实现每一个文件的单独进度条显示
+        this.uploadListTemp = this.$refs['uploadRefs'].fileList;
+        this.$emit('on-upload', this.$refs['uploadRefs'].fileList);
       },
       formatError() {
         this.$Modal.error({
@@ -227,10 +244,13 @@
         this.$emit('setShowProgress', false);
         this.$emit('setSpin', false);
       },
+      handleError(error, file, fileList) {
+        console.error({ error });
+        this.$Message.error(`上传失败，失败原因：${error.message}`);
+      },
       // 上传结束处理
       uploadedSuccessfully() {
-        // let tempList = [...this.uploadListTemp]; // 上传多条
-        let tempList = this.isMultiple ? [...this.uploadListTemp] : []; // 上传单条
+        let tempList = this.isMultiple ? this.uploadListTemp : [];
         for (const t of this.$refs['uploadRefs'].fileList) {
           if (tempList.find((c) => c.uid == t.uid && c.attachName == t.attachName)) {
             continue;
