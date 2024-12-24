@@ -20,7 +20,7 @@
       },
       renderOperBtn: Function, // 渲染按钮的方法函数
       dataId: [String, Number], // 用于判断操作类型是新增还是修改，用于选中效果的定位
-      curChapter: {
+      curData: {
         type: [String, Object],
         default: () => {
           return {};
@@ -73,7 +73,7 @@
           //     this.$set(item, 'expand', true); // 全部展开
           //     if (!item.children && flag) {
           //       // 定位到第一个活动上
-          //       this.curChapter = item;
+          //       this.curData = item;
           //       flag = false;
           //     }
           //   },
@@ -83,7 +83,7 @@
           //   this.treeDataTemp = this.flatten(this.treeData);
           //   // 初次进入界面 备份 用于在新增时判断新增的数据时哪一条 或者搜索操作后
           //   if (this.isAppend && this.treeDataTemp.length === 1) {
-          //     // this.$set(this.curChapter, "isUpdate", true); // 第一次新增时的输入框
+          //     // this.$set(this.curData, "isUpdate", true); // 第一次新增时的输入框
           //     // this.inputFocus();
           //   }
           // } else {
@@ -92,8 +92,8 @@
           //     this.parseTreeJson(this.treeData, (item) => {
           //       let index = this.treeDataTemp.findIndex((t) => t.id === item.id);
           //       if (index === -1) {
-          //         this.curChapter = item;
-          //         // this.$set(this.curChapter, "isUpdate", true); // 是否渲染修改时的输入框
+          //         this.curData = item;
+          //         // this.$set(this.curData, "isUpdate", true); // 是否渲染修改时的输入框
           //         // this.inputFocus();
           //       }
           //     });
@@ -101,15 +101,15 @@
           //     // 修改操作 修改完成后 所选数据定位到修改的那一项
           //     this.parseTreeJson(this.treeData, (item) => {
           //       if (item.id === this.dataId) {
-          //         this.curChapter = item;
+          //         this.curData = item;
           //       }
           //     });
           //   }
           //   this.treeDataTemp = this.flatten(this.treeData);
           // }
           // console.log('重复/.....');
-          // this.$set(this.curChapter, 'selected', true);
-          // this.$emit('setCurChapter', this.curChapter);
+          // this.$set(this.curData, 'selected', true);
+          // this.$emit('setCurChapter', this.curData);
         },
         deep: true,
       },
@@ -134,7 +134,7 @@
           {
             attrs: {
               'data-id': data.id,
-              class: data.selected || data.id == this.curChapter.id ? `${this.baseClass}  ivu-tree-title-selected` : this.baseClass, // data.id == this.curChapter.id 用于判断第二次点击时选中效果是否要存在
+              class: data.selected || data.id == this.curData.id ? `${this.baseClass}  ivu-tree-title-selected` : this.baseClass, // data.id == this.curData.id 用于判断第二次点击时选中效果是否要存在
             },
             on: {
               click: (e) => {
