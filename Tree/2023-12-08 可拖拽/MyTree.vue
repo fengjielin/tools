@@ -30,8 +30,12 @@
 
       // 不可点击的层级
       notClickLevel: {
-        type: [String, Number],
+        type: [String, Number, Array],
         default: -1,
+      },
+      canSelectNode: {
+        type: [Array, String],
+        default: '',
       },
     },
     model: {
@@ -115,15 +119,16 @@
     computed: {},
     methods: {
       renderContent(h, { root, node, data }) {
-        setTimeout(() => {
-          if (data.nodeKey == root[root.length - 1].nodeKey) {
-            console.log({ root, node, data });
-            console.log('渲染到最后一个了');
-            // 是否完成渲染，对于最后一个是否渲染的判断可能不准确
-            this.$emit('finishRender');
-            this.finishRender();
-          }
-        }, 0);
+        // 2024-01-12 存在问题，当最后一项被折叠了，那么下面的判断就失败了
+        // setTimeout(() => {
+        //   if (data.nodeKey == root[root.length - 1].nodeKey) {
+        //     console.log({ root, node, data });
+        //     console.log('渲染到最后一个了');
+        //     // 是否完成渲染，对于最后一个是否渲染的判断可能不准确
+        //     this.$emit('finishRender');
+        //     this.finishRender();
+        //   }
+        // }, 0);
         return h(
           'span',
           {
@@ -133,7 +138,7 @@
               class: data.selected || data.id == this.curNode.id ? `${this.baseClass}  ivu-tree-title-selected` : this.baseClass, // data.id == this.curNode.id 用于判断第二次点击时选中效果是否要存在
             },
             style: {
-              'padding-right': `${64}px`,
+              'padding-right': `${16}px`,
             },
             on: {
               dragstart: () => this.handleDrag('dragstart', { root, node, data }),
@@ -141,8 +146,21 @@
               dragend: () => this.handleDrag('dragend', { root, node, data }),
               drop: () => this.handleDrag('drop', { root, node, data }),
               click: (e) => {
-                if (data.level == this.notClickLevel) return; // 判断某一层级是否允许点击，所以查看时不需要可点击
-
+                // 判断某一层级是否允许点击，所以查看时不需要可点击
+                if (this.notClickLevel instanceof Array) {
+                  if (this.notClickLevel.includes(data.level)) return;
+                } else {
+                  if (data.level == this.notClickLevel) return;
+                }
+                if (this.canSelectNode) {
+                  // 2024-03-22
+                  // 如果数组长度为空，则所有都不可点击
+                  if (this.canSelectNode.length == 0) {
+                    return;
+                  }
+                  // id在数组内就放行，不然就阻断
+                  if (this.canSelectNode.length != 0 && !this.canSelectNode.includes(data.id)) return; // 判断当前节点是否可点击
+                }
                 this.currentRoot = root;
                 this.currentNode = node;
                 this.currentData = data;
