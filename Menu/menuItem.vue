@@ -2,13 +2,13 @@
   <ul>
     <li :class="'level_' + item.level">
       <div class="menu-item hover" :class="{ active: activeItemId == item.id, triangle: item.level != 0 && item.children }" @click.stop="handleClickItem(item)">
-        <div class="ellipsis list-title" :title="item.columnName">
-          <template v-if="item.columnName == '期满任务完成情况自评表'">
-            <span class="line-height-s">
+        <div class="ellipsis list-title" :title="item.columnName" :data-id="item.id">
+          <template v-if="lineFeed && item.columnName == '期满任务完成情况自评表'">
+            <div class="line-height-s">
               期满任务
               <br />
               完成情况自评表
-            </span>
+            </div>
           </template>
           <template v-else>
             {{ item.columnName }}
@@ -18,7 +18,7 @@
       <div :class="{ 'is-expand': item.expand }">
         <template v-if="item.level == 0 ? showSecondLevel(item) : true">
           <template v-for="(c, i) of item.children">
-            <resource-item :key="i" :item="c" :activeItemId="activeItemId" :expand="expand" :hidden="hidden" :handleClick="handleClick" v-if="true" />
+            <resource-item :key="i" :item="c" :activeItemId="activeItemId" :expand="expand" :hidden="hidden" :handleClick="handleClick" :lineFeed="lineFeed" v-if="true" />
           </template>
         </template>
       </div>
@@ -57,6 +57,11 @@
         require: true,
         type: Function,
       },
+      // 期满任务完成情况自评表 是否需要换行
+      lineFeed: {
+        type: [Boolean],
+        default: false,
+      },
     },
     data() {
       return {};
@@ -81,14 +86,26 @@
         if (this.expand) {
           this.$set(item, 'expand', !item.expand);
         }
+        // 点击一级目录，并且一级目录的子节点被隐藏的情况下
         if (item.level == 0 && this.hidden) {
           let data = '';
-          if (item.children) {
-            data = item.children[0];
-
-            if (item.children.length > 1) {
-              activeItemId = item.children[0].id;
-            }
+          // 当点击一级目录时，并且子节点长度等于1时，查找下级并显示，否则为点击哪个就定位哪个
+          if (item.children && item.children.length == 1) {
+            let flag = true;
+            this.parseTreeJson(item.children, (o) => {
+              if (flag && o.children && o.children.length == 1 && !o.children[0].children) {
+                activeItemId = o.id;
+                data = o;
+                flag = false;
+              }
+              if (flag && (!o.children || o.children.length == 0)) {
+                data = o;
+                flag = false;
+              }
+            });
+            console.log(data, activeItemId);
+          } else {
+            data = item;
           }
           if (!item.children || item.children.length == 0) {
             data = {
@@ -120,7 +137,7 @@
 
 <style scoped lang="less">
   .ellipsis {
-    max-width: 290px;
+    max-width: 2.9rem;
     overflow: hidden;
     // text-overflow: ellipsis;
     // white-space: nowrap;
@@ -130,10 +147,10 @@
   }
 
   .menu-item {
-    min-height: 50px;
+    min-height: 0.5rem;
     display: flex;
     align-items: center;
-    padding: 6px 6px 6px 6px;
+    padding: 0.06rem;
     position: relative;
   }
   .level_0 {
@@ -142,29 +159,29 @@
 
     > .menu-item {
       font-weight: 700;
-      padding-top: 16px;
-      padding-bottom: 16px;
-      padding-left: 16px;
-      font-size: 22px;
+      padding-top: 0.16rem;
+      padding-bottom: 0.16rem;
+      padding-left: 0.16rem;
+      font-size: 0.22rem;
     }
   }
   .level_1 {
     .menu-item {
-      padding-left: 36px;
-      padding-right: 32px;
-      font-size: 16px;
+      padding-left: 0.36rem;
+      padding-right: 0.32rem;
+      font-size: 0.16rem;
     }
   }
   .level_2 {
     .menu-item {
-      padding-left: 60px;
-      font-size: 16px;
+      padding-left: 0.6rem;
+      font-size: 0.16rem;
     }
   }
   .level_3 {
     .menu-item {
-      padding-left: 76px;
-      font-size: 16px;
+      padding-left: 0.76rem;
+      font-size: 0.16rem;
     }
   }
   .hover {
@@ -174,7 +191,7 @@
       background-color: #fff;
 
       &:after {
-        border-left: 4px solid #8f1f11;
+        border-left: 0.04rem solid #8f1f11;
       }
     }
   }
@@ -191,21 +208,14 @@
     content: '';
     position: absolute;
     top: 50%;
-    right: 24px;
+    right: 0.24rem;
     transform: translateY(-50%);
-    border-top: 4px solid transparent;
-    border-bottom: 4px solid transparent;
-    border-left: 4px solid #fff;
+    border-top: 0.04rem solid transparent;
+    border-bottom: 0.04rem solid transparent;
+    border-left: 0.04rem solid #fff;
   }
   .active.triangle:after {
-    border-left: 4px solid #8f1f11;
-  }
-  .line-height-s {
-    font-size: 22px;
-    line-height: 26px;
-    text-align: left;
-    // padding-left: 20px;
-    width: auto;
+    border-left: 0.04rem solid #8f1f11;
   }
 
   .is-expand {

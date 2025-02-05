@@ -291,9 +291,9 @@
 </script>
 
 <style scoped>
-  .upload-list-wrapper {
-    /* margin-left: 8px; */
-  }
+  /* .upload-list-wrapper {
+    margin-left: 8px;
+  } */
   .upload_list {
     margin-top: 6px;
   }
