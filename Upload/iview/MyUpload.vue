@@ -51,49 +51,89 @@
 </template>
 
 <script>
+  /**
+   * 上传组件 2025-02-14
+   * @example
+    <MyUpload
+      :ref="'myUploadRef'"
+      :data-ref="'myUploadRef'"
+      :uploadUrl="uploadActionUrl"
+      :uploadList="fileList"
+      :defaultFileList="defaultFileList"
+      :size="fileSize"
+      :format="fileFormat"
+      :paramsData="paramsData"
+      :showTip="false"
+      :showUploadList="true"
+      :isMultiple="true"
+      :isDel="isDel"
+      :extraRemove="true"
+      :isDownload="true"
+      @on-remove="handleRemoveFile($event, item, 'myUploadRef')"
+      @on-upload="handleUploadSuccess($event, item)"
+      @checkFile="preview"
+      @handleDownload="handleDownload"
+    >
+      <Button icon="ios-cloud-upload" type="primary" size="small" v-if="isDel" @click.stop="handleUploadConfirm(index)">上传</Button>
+    </MyUpload>
+
+    import MyUpload from '@/components/Upload/MyUpload.vue';
+    export default {
+      components: { MyUpload },
+      data(){
+      return {
+          uploadActionUrl: this.interfaceUrl + '/fileUpload.do',
+          fileSize: 5000,
+          fileFormat: ['xls', 'xlsx', 'doc', 'docx', 'pdf', 'jpg', 'jpeg', 'png'],
+          fileList: [],
+          paramsData:{},
+          isDel: true,
+      }
+      },
+      methods: {
+        handleUploadSuccess(fileList, item) {
+          this.fileList = fileList;
+        },
+        handleRemoveFile(index) {
+          this.fileList.splice(index, 1);
+          this.$refs['uploadRefs'].fileList.splice(index, 1);
+          this.$set(this, 'fileList', fileList);
+        },
+        preview(item) {
+          console.log(item);
+        },
+        handleDownload(item) {
+          console.log(item);
+        },
+        handleUploadConfirm(index) {
+          this.$refs['myUploadRef'][index].handleUploadConfirm();
+        },
+      }
+    }
+  */
+
   export default {
     name: 'MyUpload', // 2024-10-29
     props: {
       // 上传的url
-      uploadUrl: {
-        type: String,
-        default: '',
-      },
+      uploadUrl: { type: String, default: '' },
       // 上传文件的列表
-      uploadList: {
-        type: Array,
-        default: () => [],
-      },
+      uploadList: { type: Array, default: () => [] },
       // 这个默认列表为静态的初始化数据，后续不要动态改变，因为在后面存在一下赋值，导致Upload组件内出现fileList的uid对不上的问题
-      defaultFileList: {
-        type: Array,
-        default: () => [],
-      },
+      defaultFileList: { type: Array, default: () => [] },
       // 上传文件的大小限制 M
-      size: {
-        type: Number,
-        default: 5000,
-      },
+      size: { type: Number, default: 5000 },
       // 文件的格式限制
       format: {
         type: Array,
         default: () => ['xls', 'xlsx', 'doc', 'docx', 'pdf', 'ppt', 'pptx', 'txt', 'wps', 'rar', 'zip', 'jpg', 'jpeg', 'png', 'mp4'],
       },
       // 是否显示提示语
-      showTip: {
-        type: Boolean,
-        default: false,
-      },
+      showTip: { type: Boolean, default: false },
       // 是否显示文件列表
-      showUploadList: {
-        type: Boolean,
-        default: false,
-      },
+      showUploadList: { type: Boolean, default: false },
       // 是否可上传多个文件 需要使用 v-if
-      isMultiple: {
-        type: Boolean,
-        default: false,
-      },
+      isMultiple: { type: Boolean, default: false },
       // 上传时附带的额外参数
       paramsData: {
         type: Object,
@@ -102,20 +142,11 @@
         },
       },
       // 文件列表是否可删除
-      isDele: {
-        type: Boolean,
-        default: true,
-      },
+      isDele: { type: Boolean, default: true },
       // 额外的移除逻辑
-      extraRemove: {
-        type: Boolean,
-        default: false,
-      },
+      extraRemove: { type: Boolean, default: false },
       // 是否显示下载按钮
-      isDownload: {
-        type: Boolean,
-        default: false,
-      },
+      isDownload: { type: Boolean, default: false },
     },
     data() {
       return {
