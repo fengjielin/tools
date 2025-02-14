@@ -15,8 +15,11 @@
       :format="format"
       :data="paramsData"
       :headers="headers"
+      v-if="isDele"
     >
-      <slot></slot>
+      <slot>
+        <Button type="primary" @click.stop="handleUploadConfirm">选择文件</Button>
+      </slot>
     </Upload>
     <div class="upload-tip" v-if="showTip">
       {{ '仅支持上传 ' + this.format + ' 格式的文件，且上传文件大小不能超过' + this.size + 'Mb' }}
@@ -26,13 +29,16 @@
         <template v-if="item.status === 'finished'">
           <div class="upload_list-cover">
             <div class="ellipsis" style="max-width: 420px" @click="checkFile(item)" :title="item.attachName">
-              <Icon type="ios-document-outline" style="font-size: 16px" />
-              <a v-if="item" target="_blank" :href="interfaceUrl + item.attachUrl" class="attach_name">
+              <!-- <Icon type="document" style="font-size: 16px" /> -->
+              <a v-if="item" target="_blank" class="attach_name">
                 {{ item ? item.attachName : '' }}
               </a>
             </div>
-            <div v-if="isDel">
-              <Icon class="remove_icon" type="md-close" @click.native="handleRemove(item)"></Icon>
+            <div v-if="isDele">
+              <Icon class="remove_icon" type="close-round" @click.native="handleRemove(item)"></Icon>
+            </div>
+            <div v-if="isDownload">
+              <Icon class="remove_icon" type="ios-cloud-download" @click.native="handleDownload(item)" style="color: #57a3f3"></Icon>
             </div>
           </div>
         </template>
@@ -96,9 +102,19 @@
         },
       },
       // 文件列表是否可删除
-      isDel: {
+      isDele: {
         type: Boolean,
         default: true,
+      },
+      // 额外的移除逻辑
+      extraRemove: {
+        type: Boolean,
+        default: false,
+      },
+      // 是否显示下载按钮
+      isDownload: {
+        type: Boolean,
+        default: false,
       },
     },
     data() {
@@ -114,19 +130,29 @@
 
         fileTemp: [], // 上传前将上传的File对象保存起来
         headers: {
-          Authorization: `Bearer ${this.$store.state.jwt.token}`,
+          // Authorization: `Bearer ${this.$store.state.jwt.token}`,
         },
       };
     },
     created() {},
     mounted() {},
-    watch: {
-      // uploadList(val) {
-      //   this.uploadListTemp = val;
-      // },
-    },
+    watch: {},
     computed: {},
     methods: {
+      handleUploadConfirm() {
+        this.$Modal.confirm({
+          title: '重要提示',
+          content: '严禁在本互联网非涉密平台处理，传输国家秘密，请确认扫描，传输的文件资料不涉及国家秘密',
+          onOk: () => {
+            console.log(this.$refs['uploadRefs']);
+            this.$refs['uploadRefs'].handleClick();
+          },
+          onCancel: () => {},
+        });
+      },
+      handleDownload(item) {
+        this.$emit('handleDownload', item);
+      },
       checkFile(item) {
         this.$emit('checkFile', item);
       },
@@ -188,11 +214,9 @@
           this.$Message.warning('上传文件大小不能超过' + this.size + 'Mb');
           return false;
         }
-
         // 2024-10-29 将文件列表对象的引用地址赋值为上传组件中绑定的对象，实现每一个文件的单独进度条显示
         this.uploadListTemp = this.$refs['uploadRefs'].fileList;
         this.$emit('on-upload', this.$refs['uploadRefs'].fileList);
-        // console.log(this.$refs['uploadRefs'].fileList);
       },
       formatError() {
         this.$Modal.error({
@@ -210,18 +234,24 @@
         } else {
           fileList = this.$refs['uploadRefs'].fileList;
         }
-        let index = fileList.indexOf(file);
-        this.$refs['uploadRefs'].fileList.splice(index, 1);
-        this.uploadListTemp.splice(index, 1);
-        this.$emit('on-remove', index);
+
+        if (this.extraRemove) {
+          let index = this.uploadListTemp.indexOf(file);
+          this.$emit('on-remove', index);
+        } else {
+          let index = fileList.indexOf(file);
+          this.$refs['uploadRefs'].fileList.splice(index, 1);
+          this.uploadListTemp.splice(index, 1);
+          this.$emit('on-remove', index);
+        }
       },
       handleSuccess(res, file, fileList) {
         console.log(res);
-        if (res.state) {
+        if (res.state || res.status) {
           res.showProgress = false;
-          file.attachUrl = res.url ? '/' + res.url : res.attachUrl;
+          file.id = res.id ? res.id : res.assessSchoolFillAttach ? res.assessSchoolFillAttach.id : '';
+          file.attachUrl = res.url ? '/' + res.url : res.assessSchoolFillAttach ? res.assessSchoolFillAttach.attachUrl : res.attachUrl;
           file.attachName = file.name;
-
           // 判断资源是否为视频
           this.judgeDocType(file.attachUrl);
           if (this.isVideo) {
@@ -252,18 +282,18 @@
       },
       // 上传结束处理
       uploadedSuccessfully() {
-        let tempList = this.isMultiple ? this.uploadListTemp : [];
+        let tempList = this.isMultiple ? [...this.uploadListTemp] : []; // 上传单条
         for (const t of this.$refs['uploadRefs'].fileList) {
           if (tempList.find((c) => c.uid == t.uid && c.attachName == t.attachName)) {
             continue;
           }
           tempList.push(t);
         }
-        this.uploadListTemp = tempList;
-        this.$emit('on-upload', this.uploadListTemp);
         if (!this.isMultiple) {
           this.$refs['uploadRefs'].clearFiles(); // 上传单条
         }
+        this.uploadListTemp = tempList;
+        this.$emit('on-upload', this.uploadListTemp);
       },
       // 上传 end
 
@@ -299,11 +329,11 @@
   }
   .upload_list-cover {
     min-width: 200px;
-    height: 50px;
-    line-height: 50px;
+    /* height: 50px; */
+    /* line-height: 50px; */
     background: #f8f8f9;
     padding-left: 20px;
-    padding: 0 16px;
+    padding: 6px 16px;
     display: flex;
     align-items: center;
     justify-content: space-between;
