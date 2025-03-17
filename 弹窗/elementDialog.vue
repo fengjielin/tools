@@ -23,7 +23,7 @@
 import { listExpertInfo, getExpertInfo, delExpertInfo, addExpertInfo, updateExpertInfo } from "@/api/expert/expertInfo";
 
 export default {
-  name: "uploadRecommendAttach",
+  name: "",
   components: {},
   props: {
     title: {
@@ -55,7 +55,7 @@ export default {
   methods: {
     // 显示弹框
     show() {
-      this.getListExpertInfo();
+      this.getList();
       this.reset();
       this.visible = true;
     },
@@ -68,7 +68,7 @@ export default {
       this.fileList = [];
       this.resetForm("form");
     },
-    getListExpertInfo() {
+    getList() {
       let params = {
         pageNum: 1,
         pageSize: 99999,

@@ -17,6 +17,12 @@ import '@/utils/storageExpire.js'; // 有期限的localStorage
 
 import './assets/icons'; // icon
 import './permission'; // permission control
+
+// 引入 Mock 配置（仅在开发环境中引入）
+if (process.env.NODE_ENV === "development") {
+  require("../mock");
+}
+
 import { getDicts } from '@/api/system/dict/data';
 import { getConfigKey } from '@/api/system/config';
 import { setAssemblyList, parseTime, resetForm, addDateRange, selectDictLabel, selectDictLabels, handleTree } from '@/utils/ruoyi';

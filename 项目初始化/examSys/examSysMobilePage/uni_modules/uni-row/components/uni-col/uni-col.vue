@@ -212,7 +212,7 @@
 	}
 </script>
 
-<style lang='scss' >
+<style lang='less' >
 	/* breakpoints */
 	$--sm: 768px !default;
 	$--md: 992px !default;

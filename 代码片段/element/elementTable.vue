@@ -9,7 +9,7 @@
       </el-col>
     </el-row>
     <el-table
-      :data="detailList"
+      :data="dataList"
       :row-class-name="rowIndex"
       @selection-change="handleSelectionChange"
       ref="recordDetail"
@@ -41,7 +41,7 @@ export default {
   data() {
     return {
       loading: false,
-      detailList: [],
+      dataList: [],
     };
   },
   methods: {
@@ -54,14 +54,14 @@ export default {
         score: "",
         rank: "",
       };
-      this.detailList.push(obj);
+      this.dataList.push(obj);
     },
     /** 删除按钮操作 */
     handleDelete(row, index) {
       this.$modal
         .confirm("是否确认移除所选数据项？")
         .then(() => {
-          return this.detailList.splice(index, 1);
+          return this.dataList.splice(index, 1);
         })
         .then(() => {
           this.$modal.msgSuccess("移除成功");
@@ -72,9 +72,9 @@ export default {
       if (this.checked.length == 0) {
         this.$modal.msgError("请先选择要删除的数据");
       } else {
-        const detailList = this.detailList;
+        const dataList = this.dataList;
         const checked = this.checked;
-        this.detailList = detailList.filter(function (item) {
+        this.dataList = dataList.filter(function (item) {
           return checked.indexOf(item.index) == -1;
         });
       }

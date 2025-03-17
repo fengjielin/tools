@@ -370,7 +370,7 @@ export default {
 }
 </script>
 
-<style lang='scss'>
+<style lang='less'>
 .editor-tabs{
   background: #121315;
   .el-tabs__header{
