@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>广州市预报名情况分析</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-4">广州市预报名情况分析</h1>
+
+        <!-- 添加总览数据 -->
+        <div class="flex justify-center gap-8 mb-8">
+            <div class="bg-white rounded-lg shadow-lg p-4 flex-1 max-w-xs">
+                <h3 class="text-lg text-gray-500 mb-2">预报名总人数</h3>
+                <p class="text-3xl font-bold text-blue-600">95,580<span class="text-lg ml-1">人</span></p>
+            </div>
+            <div class="bg-white rounded-lg shadow-lg p-4 flex-1 max-w-xs">
+                <h3 class="text-lg text-gray-500 mb-2">单日最高预报名</h3>
+                <p class="text-3xl font-bold text-orange-600">12,360<span class="text-lg ml-1">人</span></p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- 第一个图表区域 -->
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <div id="studentChart" style="width: 100%; height: 400px;"></div>
+            </div>
+
+            <!-- 第二个图表区域 -->
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <div id="registrationChart" style="width: 100%; height: 400px;"></div>
+            </div>
+        </div>
+
+        <!-- 第三个图表区域（占据整行） -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mt-8">
+            <div id="schoolChart" style="width: 100%; height: 500px;"></div>
+        </div>
+    </div>
+
+    <script>
+        // 初始化第一个图表
+        const chartDom = document.getElementById('studentChart');
+        const myChart = echarts.init(chartDom);
+
+        // 模拟数据
+        const data = [
+            { name: '天河区', value: 85.6 },
+            { name: '越秀区', value: 78.3 },
+            { name: '海珠区', value: 72.1 },
+            { name: '白云区', value: 65.8 },
+            { name: '黄埔区', value: 58.4 },
+            { name: '番禺区', value: 52.7 },
+            { name: '花都区', value: 45.2 },
+            { name: '南沙区', value: 38.9 },
+            { name: '从化区', value: 32.5 },
+            { name: '增城区', value: 28.3 }
+        ];
+
+        // 计算平均值
+        const average = data.reduce((sum, item) => sum + item.value, 0) / data.length;
+
+        // 配置图表选项
+        const option = {
+            title: {
+                text: '广州市各区域参与学生千分比',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                },
+                formatter: function(params) {
+                    let result = params[0].name + '<br/>';
+                    params.forEach(param => {
+                        result += param.seriesName + ': ' + param.value + '‰<br/>';
+                    });
+                    result += '平均值: ' + average.toFixed(1) + '‰';
+                    return result;
+                }
+            },
+            legend: {
+                data: ['参与学生千分比', '平均值'],
+                top: 30,
+                textStyle: {
+                    fontSize: 12
+                },
+                itemWidth: 25,
+                itemHeight: 14
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                top: '15%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'category',
+                data: data.map(item => item.name),
+                axisLabel: {
+                    interval: 0,
+                    rotate: 45
+                }
+            },
+            yAxis: {
+                type: 'value',
+                name: '千分比',
+                axisLabel: {
+                    formatter: '{value}‰'
+                }
+            },
+            series: [
+                {
+                    name: '参与学生千分比',
+                    type: 'bar',
+                    data: data.map(item => item.value),
+                    label: {
+                        show: true,
+                        position: 'top',
+                        formatter: '{c}‰',
+                        fontSize: 12,
+                        color: '#666'
+                    },
+                    itemStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            { offset: 0, color: '#83bff6' },
+                            { offset: 0.5, color: '#188df0' },
+                            { offset: 1, color: '#188df0' }
+                        ])
+                    },
+                    emphasis: {
+                        itemStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                { offset: 0, color: '#66a9e8' },
+                                { offset: 0.7, color: '#0d47a1' },
+                                { offset: 1, color: '#0d47a1' }
+                            ])
+                        }
+                    },
+                    markLine: {
+                        data: [
+                            {
+                                name: '平均值',
+                                type: 'average',
+                                label: {
+                                    show: true,
+                                    position: 'insideEndTop',
+                                    formatter: '{c}‰',
+                                    fontSize: 12,
+                                    color: '#ff7675',
+                                    padding: [4, 0, 0, 0]
+                                },
+                                lineStyle: {
+                                    color: '#ff7675',
+                                    type: 'dashed',
+                                    width: 2
+                                }
+                            }
+                        ],
+                        symbol: ['none', 'none'],
+                        symbolSize: [10, 10],
+                        animation: false
+                    }
+                }
+            ]
+        };
+
+        // 使用配置项显示图表
+        myChart.setOption(option);
+
+        // 初始化第二个图表
+        const registrationDom = document.getElementById('registrationChart');
+        const registrationChart = echarts.init(registrationDom);
+
+        // 预报名人数数据
+        const registrationData = [
+            { name: '天河区', value: 15680 },
+            { name: '越秀区', value: 14200 },
+            { name: '海珠区', value: 12800 },
+            { name: '白云区', value: 11500 },
+            { name: '黄埔区', value: 9800 },
+            { name: '番禺区', value: 8900 },
+            { name: '花都区', value: 7600 },
+            { name: '南沙区', value: 6400 },
+            { name: '从化区', value: 4200 },
+            { name: '增城区', value: 3900 }
+        ];
+
+        // 计算预报名人数平均值
+        const registrationAverage = registrationData.reduce((sum, item) => sum + item.value, 0) / registrationData.length;
+
+        // 第二个图表配置
+        const registrationOption = {
+            title: {
+                text: '广州市各区域预报名人数排行榜',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                },
+                formatter: function(params) {
+                    let result = params[0].name + '<br/>';
+                    params.forEach(param => {
+                        result += param.seriesName + ': ' + param.value + '人<br/>';
+                    });
+                    result += '平均值: ' + registrationAverage.toFixed(0) + '人';
+                    return result;
+                }
+            },
+            legend: {
+                data: ['预报名人数', '平均值'],
+                top: 30,
+                textStyle: {
+                    fontSize: 12
+                },
+                itemWidth: 25,
+                itemHeight: 14
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                top: '15%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'category',
+                data: registrationData.map(item => item.name),
+                axisLabel: {
+                    interval: 0,
+                    rotate: 45
+                }
+            },
+            yAxis: {
+                type: 'value',
+                name: '人数',
+                axisLabel: {
+                    formatter: '{value}人'
+                }
+            },
+            series: [
+                {
+                    name: '预报名人数',
+                    type: 'bar',
+                    data: registrationData.map(item => item.value),
+                    label: {
+                        show: true,
+                        position: 'top',
+                        formatter: '{c}人',
+                        fontSize: 12,
+                        color: '#666'
+                    },
+                    itemStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            { offset: 0, color: '#ffa07a' },
+                            { offset: 0.5, color: '#ff7043' },
+                            { offset: 1, color: '#ff7043' }
+                        ])
+                    },
+                    emphasis: {
+                        itemStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                { offset: 0, color: '#ff8a65' },
+                                { offset: 0.7, color: '#e64a19' },
+                                { offset: 1, color: '#e64a19' }
+                            ])
+                        }
+                    },
+                    markLine: {
+                        data: [
+                            {
+                                name: '平均值',
+                                type: 'average',
+                                label: {
+                                    show: true,
+                                    position: 'insideEndTop',
+                                    formatter: '{c}人',
+                                    fontSize: 12,
+                                    color: '#ff7675',
+                                    padding: [4, 0, 0, 0]
+                                },
+                                lineStyle: {
+                                    color: '#ff7675',
+                                    type: 'dashed',
+                                    width: 2
+                                }
+                            }
+                        ],
+                        symbol: ['none', 'none'],
+                        symbolSize: [10, 10],
+                        animation: false
+                    }
+                }
+            ]
+        };
+
+        // 使用配置项显示第二个图表
+        registrationChart.setOption(registrationOption);
+
+        // 初始化第三个图表
+        const schoolDom = document.getElementById('schoolChart');
+        const schoolChart = echarts.init(schoolDom);
+
+        // 学校预报名数据
+        const schoolData = [
+            { name: '广州第一中学', value: 3200 },
+            { name: '广州市执信中学', value: 2980 },
+            { name: '广州市第二中学', value: 2850 },
+            { name: '广州市第六中学', value: 2680 },
+            { name: '广州市第七中学', value: 2520 },
+            { name: '广州市第十六中学', value: 2350 },
+            { name: '广州市第五中学', value: 2180 },
+            { name: '广州市第八中学', value: 2050 },
+            { name: '广州市铁一中学', value: 1920 },
+            { name: '广州市真光中学', value: 1850 }
+        ];
+
+        // 计算学校预报名平均值
+        const schoolAverage = schoolData.reduce((sum, item) => sum + item.value, 0) / schoolData.length;
+
+        // 第三个图表配置
+        const schoolOption = {
+            title: {
+                text: '广州市各学校预报名排行榜',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                },
+                formatter: function(params) {
+                    let result = params[0].name + '<br/>';
+                    params.forEach(param => {
+                        result += param.seriesName + ': ' + param.value + '人<br/>';
+                    });
+                    result += '平均值: ' + schoolAverage.toFixed(0) + '人';
+                    return result;
+                }
+            },
+            legend: {
+                data: ['预报名人数', '平均值'],
+                top: 30,
+                textStyle: {
+                    fontSize: 12
+                },
+                itemWidth: 25,
+                itemHeight: 14
+            },
+            grid: {
+                left: '8%',
+                right: '8%',
+                bottom: '3%',
+                top: '15%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'value',
+                name: '人数',
+                axisLabel: {
+                    formatter: '{value}人'
+                },
+                nameLocation: 'end',
+                nameGap: 10,
+                name: '人数'
+            },
+            yAxis: {
+                type: 'category',
+                data: schoolData.map(item => item.name).reverse(),
+                axisLabel: {
+                    interval: 0,
+                    align: 'right',
+                    padding: [0, 15, 0, 0]
+                }
+            },
+            series: [
+                {
+                    name: '预报名人数',
+                    type: 'bar',
+                    data: schoolData.map(item => item.value).reverse(),
+                    label: {
+                        show: true,
+                        position: 'right',
+                        formatter: '{c}人',
+                        fontSize: 12,
+                        color: '#333',
+                        offset: [10, 0],
+                        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                        padding: [4, 8],
+                        borderRadius: 4
+                    },
+                    itemStyle: {
+                        color: new echarts.graphic.LinearGradient(1, 0, 0, 0, [
+                            { offset: 0, color: '#4fd1c5' },
+                            { offset: 0.5, color: '#319795' },
+                            { offset: 1, color: '#319795' }
+                        ])
+                    },
+                    emphasis: {
+                        itemStyle: {
+                            color: new echarts.graphic.LinearGradient(1, 0, 0, 0, [
+                                { offset: 0, color: '#2c7a7b' },
+                                { offset: 0.7, color: '#285e61' },
+                                { offset: 1, color: '#285e61' }
+                            ])
+                        }
+                    },
+                    markLine: {
+                        data: [
+                            {
+                                name: '平均值',
+                                type: 'average',
+                                label: {
+                                    show: true,
+                                    position: 'insideEndTop',
+                                    formatter: '{c}人',
+                                    fontSize: 12,
+                                    color: '#ff7675',
+                                    padding: [4, 0, 0, 0]
+                                },
+                                lineStyle: {
+                                    color: '#ff7675',
+                                    type: 'dashed',
+                                    width: 2
+                                }
+                            }
+                        ],
+                        symbol: ['none', 'none'],
+                        symbolSize: [10, 10],
+                        animation: false
+                    }
+                }
+            ]
+        };
+
+        // 使用配置项显示第三个图表
+        schoolChart.setOption(schoolOption);
+
+        // 响应式调整
+        window.addEventListener('resize', function() {
+            myChart.resize();
+            registrationChart.resize();
+            schoolChart.resize();
+        });
+    </script>
+</body>
+</html>

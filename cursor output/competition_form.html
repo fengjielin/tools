@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>参赛信息填写</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <script src="https://unpkg.com/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <style>
+        .el-dialog {
+            border-radius: 8px;
+        }
+        .el-dialog__header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #EBEEF5;
+        }
+        .el-dialog__body {
+            padding: 24px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        .el-dialog__footer {
+            padding: 16px 24px;
+            border-top: 1px solid #EBEEF5;
+        }
+        .el-form-item__label {
+            font-weight: 500;
+        }
+        .el-upload-dragger {
+            width: 100%;
+        }
+        .el-divider {
+            margin: 24px 0;
+        }
+        .upload-section {
+            margin-bottom: 16px;
+            padding: 16px;
+            background: #FFFFFF;
+            border: 1px solid #EBEEF5;
+            border-radius: 8px;
+        }
+        .upload-section:last-child {
+            margin-bottom: 0;
+        }
+        .upload-section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        .upload-section-title-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .upload-section-icon {
+            width: 16px;
+            height: 16px;
+            color: #909399;
+        }
+        .required-label::before {
+            content: '*';
+            color: #F56C6C;
+            margin-right: 4px;
+        }
+        .upload-area {
+            border: 1px dashed #DCDFE6;
+            border-radius: 4px;
+            background-color: #FFFFFF;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .upload-area:hover {
+            border-color: #409EFF;
+        }
+        .upload-content {
+            display: flex;
+            align-items: center;
+            color: #606266;
+        }
+        .upload-icon {
+            margin-right: 8px;
+            color: #909399;
+        }
+        .upload-text {
+            font-size: 14px;
+            color: #606266;
+        }
+        .file-limit {
+            font-size: 12px;
+            color: #909399;
+            margin-top: 4px;
+        }
+        .uploaded-file {
+            margin-top: 8px;
+            padding: 8px;
+            background: #F5F7FA;
+            border-radius: 4px;
+        }
+        .uploaded-file-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .uploaded-file-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #606266;
+        }
+        .uploaded-file-name {
+            font-size: 14px;
+        }
+        .uploaded-file-size {
+            color: #909399;
+            font-size: 12px;
+        }
+        .delete-btn {
+            padding: 2px;
+            color: #F56C6C;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .delete-btn:hover {
+            color: #f78989;
+        }
+        /* 添加步骤导航样式 */
+        .steps {
+            display: flex;
+            margin-bottom: 24px;
+            position: relative;
+        }
+        .step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        .step-number {
+            width: 28px;
+            height: 28px;
+            line-height: 28px;
+            border-radius: 50%;
+            background: #F5F7FA;
+            color: #909399;
+            margin: 0 auto 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        .step-title {
+            font-size: 14px;
+            color: #909399;
+            transition: all 0.3s;
+        }
+        .step.active .step-number {
+            background: #409EFF;
+            color: #FFFFFF;
+        }
+        .step.active .step-title {
+            color: #409EFF;
+        }
+        .step.done .step-number {
+            background: #67C23A;
+            color: #FFFFFF;
+        }
+        .step-line {
+            position: absolute;
+            top: 14px;
+            left: 15%;
+            right: 15%;
+            height: 1px;
+            background: #DCDFE6;
+            z-index: 0;
+        }
+        /* 添加步骤内容切换样式 */
+        .step-content {
+            display: none;
+        }
+        .step-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen p-8">
+    <!-- 设计预览容器 -->
+    <div class="max-w-7xl mx-auto">
+        <div class="mockup p-4 border border-gray-200 rounded-lg bg-white">
+            <div class="el-dialog rounded-lg shadow-lg max-w-xl mx-auto">
+                <div class="el-dialog__header">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-lg font-medium text-gray-900">参赛信息填写</h2>
+                        <button class="text-gray-400 hover:text-gray-500">
+                            <img src="https://unpkg.com/lucide-static@latest/icons/x.svg" class="w-5 h-5">
+                        </button>
+                    </div>
+                </div>
+
+                <div class="el-dialog__body">
+                    <!-- 添加步骤导航 -->
+                    <div class="steps">
+                        <div class="step-line"></div>
+                        <div class="step active">
+                            <div class="step-number">1</div>
+                            <div class="step-title">参赛信息</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-title">材料上传</div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <!-- 第一步：参赛信息 -->
+                        <div class="step-content active">
+                            <div>
+                                <h3 class="text-base font-medium text-gray-900 mb-4">参赛信息</h3>
+                                <div class="space-y-4">
+                                    <div class="el-form-item">
+                                        <label class="el-form-item__label required-label">参赛组别</label>
+                                        <div class="el-radio-group">
+                                            <label class="el-radio">
+                                                <input type="radio" name="group" value="primary">
+                                                <span class="el-radio__label">小学组</span>
+                                            </label>
+                                            <label class="el-radio">
+                                                <input type="radio" name="group" value="middle" checked>
+                                                <span class="el-radio__label">中学组</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div class="el-form-item">
+                                            <label class="el-form-item__label required-label">学校名称</label>
+                                            <input type="text" class="el-input__inner w-full" placeholder="请输入学校名称">
+                                        </div>
+                                        <div class="el-form-item">
+                                            <label class="el-form-item__label required-label">参赛年级</label>
+                                            <select class="el-select w-full">
+                                                <option value="">请选择年级</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div class="el-form-item">
+                                            <label class="el-form-item__label required-label">参赛单位</label>
+                                            <input type="text" class="el-input__inner w-full" placeholder="请输入参赛单位名称">
+                                        </div>
+                                        <div class="el-form-item">
+                                            <label class="el-form-item__label required-label">指导老师</label>
+                                            <input type="text" class="el-input__inner w-full" placeholder="请输入指导老师姓名">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 第二步：参赛信息补充 -->
+                        <div class="step-content">
+                            <div>
+                                <h3 class="text-base font-medium text-gray-900 mb-4">参赛信息补充</h3>
+                                <div class="space-y-4">
+                                    <!-- 体验证明 -->
+                                    <div class="upload-section">
+                                        <div class="upload-section-title">
+                                            <div class="upload-section-title-left">
+                                                <img src="https://unpkg.com/lucide-static@latest/icons/file-check.svg" class="upload-section-icon">
+                                                <label class="text-sm font-medium text-gray-700 required-label">体验证明</label>
+                                            </div>
+                                            <span class="text-xs text-gray-400">仅支持 PDF、JPG、PNG 格式，≤10MB</span>
+                                        </div>
+                                        <div class="upload-area">
+                                            <div class="upload-content">
+                                                <img src="https://unpkg.com/lucide-static@latest/icons/upload.svg" class="w-4 h-4 upload-icon">
+                                                <span class="upload-text">点击或拖拽文件至此处上传</span>
+                                            </div>
+                                        </div>
+                                        <div class="uploaded-file">
+                                            <div class="uploaded-file-content">
+                                                <div class="uploaded-file-info">
+                                                    <img src="https://unpkg.com/lucide-static@latest/icons/file-text.svg" class="w-4 h-4">
+                                                    <span class="uploaded-file-name">体验证明.pdf</span>
+                                                    <span class="uploaded-file-size">1.2MB</span>
+                                                </div>
+                                                <button class="delete-btn">
+                                                    <img src="https://unpkg.com/lucide-static@latest/icons/x.svg" class="w-4 h-4">
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 承诺书 -->
+                                    <div class="upload-section">
+                                        <div class="upload-section-title">
+                                            <div class="upload-section-title-left">
+                                                <img src="https://unpkg.com/lucide-static@latest/icons/file-signature.svg" class="upload-section-icon">
+                                                <label class="text-sm font-medium text-gray-700 required-label">承诺书</label>
+                                            </div>
+                                            <span class="text-xs text-gray-400">仅支持 PDF、JPG、PNG 格式，≤10MB</span>
+                                        </div>
+                                        <div class="upload-area">
+                                            <div class="upload-content">
+                                                <img src="https://unpkg.com/lucide-static@latest/icons/upload.svg" class="w-4 h-4 upload-icon">
+                                                <span class="upload-text">点击或拖拽文件至此处上传</span>
+                                            </div>
+                                        </div>
+                                        <div class="uploaded-file">
+                                            <div class="uploaded-file-content">
+                                                <div class="uploaded-file-info">
+                                                    <img src="https://unpkg.com/lucide-static@latest/icons/file-text.svg" class="w-4 h-4">
+                                                    <span class="uploaded-file-name">承诺书.pdf</span>
+                                                    <span class="uploaded-file-size">856KB</span>
+                                                </div>
+                                                <button class="delete-btn">
+                                                    <img src="https://unpkg.com/lucide-static@latest/icons/x.svg" class="w-4 h-4">
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 预赛作品 -->
+                                    <div class="upload-section">
+                                        <div class="upload-section-title">
+                                            <div class="upload-section-title-left">
+                                                <img src="https://unpkg.com/lucide-static@latest/icons/file-code.svg" class="upload-section-icon">
+                                                <label class="text-sm font-medium text-gray-700 required-label">预赛作品</label>
+                                            </div>
+                                            <span class="text-xs text-gray-400">仅支持 PDF、JPG、PNG 格式，≤10MB</span>
+                                        </div>
+                                        <div class="upload-area">
+                                            <div class="upload-content">
+                                                <img src="https://unpkg.com/lucide-static@latest/icons/upload.svg" class="w-4 h-4 upload-icon">
+                                                <span class="upload-text">点击或拖拽文件至此处上传</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 决赛作品 -->
+                                    <div class="upload-section">
+                                        <div class="upload-section-title">
+                                            <div class="upload-section-title-left">
+                                                <img src="https://unpkg.com/lucide-static@latest/icons/file-code-2.svg" class="upload-section-icon">
+                                                <label class="text-sm font-medium text-gray-700">决赛作品</label>
+                                            </div>
+                                            <span class="text-xs text-gray-400">仅支持 PDF、JPG、PNG 格式，≤10MB</span>
+                                        </div>
+                                        <div class="upload-area">
+                                            <div class="upload-content">
+                                                <img src="https://unpkg.com/lucide-static@latest/icons/upload.svg" class="w-4 h-4 upload-icon">
+                                                <span class="upload-text">点击或拖拽文件至此处上传</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 佐证材料 -->
+                                    <div class="upload-section">
+                                        <div class="upload-section-title">
+                                            <div class="upload-section-title-left">
+                                                <img src="https://unpkg.com/lucide-static@latest/icons/files.svg" class="upload-section-icon">
+                                                <label class="text-sm font-medium text-gray-700">佐证材料</label>
+                                            </div>
+                                            <span class="text-xs text-gray-400">仅支持 PDF、JPG、PNG 格式，≤10MB</span>
+                                        </div>
+                                        <div class="upload-area">
+                                            <div class="upload-content">
+                                                <img src="https://unpkg.com/lucide-static@latest/icons/upload.svg" class="w-4 h-4 upload-icon">
+                                                <span class="upload-text">点击或拖拽文件至此处上传</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 头像 -->
+                                    <div class="upload-section">
+                                        <div class="upload-section-title">
+                                            <div class="upload-section-title-left">
+                                                <img src="https://unpkg.com/lucide-static@latest/icons/user.svg" class="upload-section-icon">
+                                                <label class="text-sm font-medium text-gray-700">头像</label>
+                                            </div>
+                                            <span class="text-xs text-gray-400">仅支持 JPG、PNG 格式，≤2MB</span>
+                                        </div>
+                                        <div class="upload-area">
+                                            <div class="upload-content">
+                                                <img src="https://unpkg.com/lucide-static@latest/icons/upload.svg" class="w-4 h-4 upload-icon">
+                                                <span class="upload-text">点击或拖拽文件至此处上传</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="el-dialog__footer">
+                    <div class="flex justify-between">
+                        <button class="el-button el-button--default" id="prevStep" style="display: none;">上一步</button>
+                        <div class="flex space-x-3">
+                            <button class="el-button el-button--default" id="cancelBtn">取消</button>
+                            <button class="el-button el-button--primary" id="nextStep">下一步</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const steps = document.querySelectorAll('.step');
+            const contents = document.querySelectorAll('.step-content');
+            const nextBtn = document.getElementById('nextStep');
+            const prevBtn = document.getElementById('prevStep');
+            let currentStep = 0;
+
+            function updateSteps() {
+                steps.forEach((step, index) => {
+                    if (index < currentStep) {
+                        step.classList.remove('active');
+                        step.classList.add('done');
+                    } else if (index === currentStep) {
+                        step.classList.add('active');
+                        step.classList.remove('done');
+                    } else {
+                        step.classList.remove('active', 'done');
+                    }
+                });
+
+                contents.forEach((content, index) => {
+                    if (index === currentStep) {
+                        content.classList.add('active');
+                    } else {
+                        content.classList.remove('active');
+                    }
+                });
+
+                prevBtn.style.display = currentStep > 0 ? 'block' : 'none';
+                nextBtn.textContent = currentStep === steps.length - 1 ? '提交' : '下一步';
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentStep < steps.length - 1) {
+                    currentStep++;
+                    updateSteps();
+                } else {
+                    // 提交表单
+                    console.log('提交表单');
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentStep > 0) {
+                    currentStep--;
+                    updateSteps();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
