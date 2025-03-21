@@ -216,7 +216,7 @@
   .no_editable:hover:after {
     display: none;
   }
-  .avatar-upload-preview{
+  .avatar-upload-preview {
     width: 150px;
     height: 200px;
   }

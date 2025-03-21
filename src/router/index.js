@@ -177,7 +177,7 @@ Router.prototype.replace = function push(location) {
 };
 
 export default new Router({
-  base: '/examSys', //部署项目添加后缀需要添加此项配置
+  base: '/devTricks', //部署项目添加后缀需要添加此项配置
   mode: 'history', // 去掉url中的#
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes,

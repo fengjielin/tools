@@ -173,4 +173,4 @@ export const validateIdent = {
   },
 };
 
-export const IdentityCodeValid = validateIdent.IdentityCodeValid
+export const IdentityCodeValid = validateIdent.IdentityCodeValid;

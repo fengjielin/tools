@@ -11,35 +11,35 @@
 </template>
 
 <script>
-import { createTable } from "@/api/tool/gen";
-export default {
-  data() {
-    return {
-      // 遮罩层
-      visible: false,
-      // 文本内容
-      content: ""
-    };
-  },
-  methods: {
-    // 显示弹框
-    show() {
-      this.visible = true;
+  import { createTable } from '@/api/tool/gen';
+  export default {
+    data() {
+      return {
+        // 遮罩层
+        visible: false,
+        // 文本内容
+        content: '',
+      };
     },
-    /** 创建按钮操作 */
-    handleCreateTable() {
-      if (this.content === "") {
-        this.$modal.msgError("请输入建表语句");
-        return;
-      }
-      createTable({ sql: this.content }).then(res => {
-        this.$modal.msgSuccess(res.msg);
-        if (res.code === 200) {
-          this.visible = false;
-          this.$emit("ok");
+    methods: {
+      // 显示弹框
+      show() {
+        this.visible = true;
+      },
+      /** 创建按钮操作 */
+      handleCreateTable() {
+        if (this.content === '') {
+          this.$modal.msgError('请输入建表语句');
+          return;
         }
-      });
-    }
-  }
-};
+        createTable({ sql: this.content }).then((res) => {
+          this.$modal.msgSuccess(res.msg);
+          if (res.code === 200) {
+            this.visible = false;
+            this.$emit('ok');
+          }
+        });
+      },
+    },
+  };
 </script>

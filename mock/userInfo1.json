@@ -1,81 +1,72 @@
 {
-    "data": {
-        "id": 500,
-        "rid": 0,
-        "username": "admin",
-        "mobile": "13999999999",
-        "email": "123999@qq.com",
-        "token": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjUwMCwicmlkIjowLCJpYXQiOjE1MTI1NDQyOTksImV4cCI6MTUxMjYzMDY5OX0.eGrsrvwHm-tPsO9r_pxHIQ5i5L1kX9RX444uwnRGaIM"
+  "msg": "操作成功",
+  "code": 200,
+  "permissions": ["*:*:*"],
+  "roles": ["admin"],
+  "user": {
+    "createBy": "admin",
+    "createTime": "2024-06-30 11:27:11",
+    "updateBy": null,
+    "updateTime": null,
+    "remark": "管理员",
+    "userId": 1,
+    "deptId": 103,
+    "userName": "admin",
+    "nickName": "若依",
+    "email": "ry@163.com",
+    "phonenumber": "15888888888",
+    "sex": "1",
+    "avatar": "",
+    "password": "$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2",
+    "status": "0",
+    "delFlag": "0",
+    "loginIp": "117.71.111.18",
+    "loginDate": "2025-03-21T16:01:24.000+08:00",
+    "dept": {
+      "createBy": null,
+      "createTime": null,
+      "updateBy": null,
+      "updateTime": null,
+      "remark": null,
+      "deptId": 103,
+      "parentId": 101,
+      "ancestors": "0,100,101",
+      "deptName": "研发部门",
+      "orderNum": 1,
+      "leader": "若依",
+      "phone": null,
+      "email": null,
+      "status": "0",
+      "delFlag": null,
+      "parentName": null,
+      "children": []
     },
-    "rights": [
-        {
-            "id": 125,
-            "authName": "用户管理",
-            "icon": "icon-user",
-            "children": [
-                {
-                    "id": 110,
-                    "authName": "用户列表",
-                    "path": "users",
-                    "rights": [
-                        "view",
-                        "edit",
-                        "add",
-                        "delete"
-                    ]
-                }
-            ]
-        },
-        {
-            "id": 103,
-            "authName": "角色管理",
-            "icon": "icon-tijikongjian",
-            "children": [
-                {
-                    "id": 111,
-                    "authName": "角色列表",
-                    "path": "roles",
-                    "rights": [
-                        "view",
-                        "edit",
-                        "add",
-                        "delete"
-                    ]
-                }
-            ]
-        },
-        {
-            "id": 101,
-            "authName": "商品管理",
-            "icon": "icon-shangpin",
-            "children": [
-                {
-                    "id": 104,
-                    "authName": "商品列表",
-                    "path": "goods",
-                    "rights": [
-                        "view",
-                        "edit",
-                        "add",
-                        "delete"
-                    ]
-                },
-                {
-                    "id": 121,
-                    "authName": "商品分类",
-                    "path": "categories",
-                    "rights": [
-                        "view",
-                        "edit",
-                        "add",
-                        "delete"
-                    ]
-                }
-            ]
-        }
+    "roles": [
+      {
+        "createBy": null,
+        "createTime": null,
+        "updateBy": null,
+        "updateTime": null,
+        "remark": null,
+        "roleId": 1,
+        "roleName": "超级管理员",
+        "roleKey": "admin",
+        "roleSort": 1,
+        "dataScope": "1",
+        "menuCheckStrictly": false,
+        "deptCheckStrictly": false,
+        "status": "0",
+        "delFlag": null,
+        "flag": false,
+        "menuIds": null,
+        "deptIds": null,
+        "permissions": null,
+        "admin": true
+      }
     ],
-    "meta": {
-        "msg": "登录成功",
-        "status": 200
-    }
+    "roleIds": null,
+    "postIds": null,
+    "roleId": null,
+    "admin": true
+  }
 }

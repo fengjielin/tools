@@ -8,7 +8,8 @@ export default {
     const dragDom = el.querySelector('.el-dialog');
     const lineEl = document.createElement('div');
     lineEl.style = 'width: 5px; background: inherit; height: 80%; position: absolute; right: 0; top: 0; bottom: 0; margin: auto; z-index: 1; cursor: w-resize;';
-    lineEl.addEventListener('mousedown',
+    lineEl.addEventListener(
+      'mousedown',
       function (e) {
         // 鼠标按下，计算当前元素距离可视区的距离
         const disX = e.clientX - el.offsetLeft;
@@ -24,7 +25,9 @@ export default {
           document.onmousemove = null;
           document.onmouseup = null;
         };
-      }, false);
+      },
+      false,
+    );
     dragDom.appendChild(lineEl);
-  }
-}
+  },
+};

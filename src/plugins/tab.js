@@ -1,4 +1,4 @@
-import store from '@/store'
+import store from '@/store';
 import router from '@/router';
 
 export default {
@@ -15,16 +15,16 @@ export default {
       });
     }
     return store.dispatch('tagsView/delCachedView', obj).then(() => {
-      const { path, query } = obj
+      const { path, query } = obj;
       router.replace({
         path: '/redirect' + path,
-        query: query
-      })
-    })
+        query: query,
+      });
+    });
   },
   // 关闭当前tab页签，打开新页签
   closeOpenPage(obj) {
-    store.dispatch("tagsView/delView", router.currentRoute);
+    store.dispatch('tagsView/delView', router.currentRoute);
     if (obj !== undefined) {
       return router.push(obj);
     }
@@ -33,9 +33,9 @@ export default {
   closePage(obj) {
     if (obj === undefined) {
       return store.dispatch('tagsView/delView', router.currentRoute).then(({ visitedViews }) => {
-        const latestView = visitedViews.slice(-1)[0]
+        const latestView = visitedViews.slice(-1)[0];
         if (latestView) {
-          return router.push(latestView.fullPath)
+          return router.push(latestView.fullPath);
         }
         return router.push('/');
       });
@@ -60,12 +60,12 @@ export default {
   },
   // 添加tab页签
   openPage(title, url, params) {
-    const obj = { path: url, meta: { title: title } }
+    const obj = { path: url, meta: { title: title } };
     store.dispatch('tagsView/addView', obj);
     return router.push({ path: url, query: params });
   },
   // 修改tab页签
   updatePage(obj) {
     return store.dispatch('tagsView/updateVisitedView', obj);
-  }
-}
+  },
+};

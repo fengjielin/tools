@@ -1,15 +1,15 @@
-import Cookies from 'js-cookie'
+import Cookies from 'js-cookie';
 
-const TokenKey = 'expertData-Token'
+const TokenKey = 'expertData-Token';
 
 export function getToken() {
-  return Cookies.get(TokenKey)
+  return Cookies.get(TokenKey);
 }
 
 export function setToken(token) {
-  return Cookies.set(TokenKey, token)
+  return Cookies.set(TokenKey, token);
 }
 
 export function removeToken() {
-  return Cookies.remove(TokenKey)
+  return Cookies.remove(TokenKey);
 }

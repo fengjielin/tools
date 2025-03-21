@@ -19,7 +19,7 @@ module.exports = {
   // 部署生产环境和开发环境下的URL。
   // 默认情况下，Vue CLI 会假设你的应用是被部署在一个域名的根路径上
   // 例如 https://www.ruoyi.vip/。如果应用被部署在一个子路径上，你就需要用这个选项指定这个子路径。例如，如果你的应用被部署在 https://www.ruoyi.vip/admin/，则设置 baseUrl 为 /admin/。
-  publicPath: process.env.NODE_ENV === 'production' ? '/examSys' : '/examSys',
+  publicPath: process.env.NODE_ENV === 'production' ? '/devTricks' : '/devTricks',
   // 在npm run build 或 yarn build 时 ，生成文件的目录名称（要和baseUrl的生产环境路径一致）（默认dist）
   outputDir: 'dist',
   // 用于放置生成的静态资源 (js、css、img、fonts) 的；（项目打包之后，静态资源会放在这个文件夹下）
@@ -30,7 +30,15 @@ module.exports = {
   productionSourceMap: false,
   // webpack-dev-server 相关配置
   devServer: {
-    before: require('./mock/index.js'), // 引入mock/index.js
+    before: function (app) {
+      console.log('\n=================');
+      console.log('DevServer Before Hook 被触发');
+      console.log('时间:', new Date().toISOString());
+      console.log('=================\n');
+
+      // 引入mock/index.js
+      require('./mock/index.js')(app);
+    },
     host: '0.0.0.0',
     port: port,
     open: true,
