@@ -70,9 +70,23 @@ module.exports = function (app) {
         json = getJsonFile('./login.json');
       } else {
         console.log('[Mock] 登录失败：用户名或密码错误');
-        json = getJsonFile('./error.json');
+        json = {
+          code2: 500,
+          msg: '用户不存在/密码错误',
+        };
       }
 
+      // 将json传入 Mock.mock 方法中，生成的数据返回给浏览器
+      res.json(Mock.mock(json));
+    });
+
+    // 登出
+    app.post(API_PREFIX + '/logout', function (req, res) {
+      console.log('\n[Mock] 收到登出请求');
+      let json = {
+        code: 200,
+        msg: '',
+      };
       // 将json传入 Mock.mock 方法中，生成的数据返回给浏览器
       res.json(Mock.mock(json));
     });
