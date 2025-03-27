@@ -61,6 +61,13 @@ export const constantRoutes = [
     component: () => import('@/views/error/401'),
     hidden: true,
   },
+
+  {
+    path: '/forward/index',
+    component: () => import('@/views/forward/index'),
+    hidden: true,
+    meta: { title: '', requireAuth: "noAuth", },
+  },
   {
     path: '',
     component: Layout,

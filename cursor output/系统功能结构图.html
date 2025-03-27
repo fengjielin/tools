@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>系统功能结构图</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: white;
+        }
+        .container {
+            width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 15px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin: 0 0 15px 0;
+            font-size: 18px;
+        }
+        .priority-legend {
+            margin: 0 0 10px 0;
+            padding: 8px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        .priority-legend h3 {
+            margin: 0 0 5px 0;
+            color: #666;
+            font-size: 14px;
+        }
+        .priority-item {
+            display: inline-block;
+            margin-right: 15px;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+        .priority-p0 {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+        .priority-p1 {
+            background-color: #fff3e0;
+            color: #ef6c00;
+        }
+        .mermaid {
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>系统功能结构图</h1>
+
+        <div class="priority-legend">
+            <h3>功能优先级说明：</h3>
+            <div class="priority-item priority-p0">P0：核心功能，必须实现</div>
+            <div class="priority-item priority-p1">P1：重要功能，优先实现</div>
+        </div>
+
+        <div class="mermaid">
+            graph LR
+                A[系统总体功能] --> B[网站页面升级]
+                A --> C[科普项目申报评审]
+                A --> D[科技活动管理]
+                A --> E[夏令营管理]
+                A --> F[校园生态环境建设]
+                A --> G[科教资源统筹]
+
+                B --> B1[栏目重构]
+                B --> B2[内容分类]
+
+                C --> C1[项目申报管理]
+                C --> C2[专家评审管理]
+                C --> C3[统计分析报表]
+
+                D --> D1[活动信息管理]
+                D --> D2[报名管理]
+                D --> D3[成绩管理]
+
+                E --> E1[营期管理]
+                E --> E2[报名管理]
+                E --> E3[成果展示]
+
+                F --> F1[垃圾分类系统]
+                F --> F2[绿色学校申报]
+
+                G --> G1[资源统计]
+                G --> G2[公益科普基地]
+                G --> G3[公益课堂]
+                G --> G4[科普资源]
+                G --> G5[科技教师库]
+                G --> G6[证书等级核对]
+                G --> G7[专家库]
+
+                classDef p0 fill:#ffebee,stroke:#c62828,stroke-width:1px;
+                classDef p1 fill:#fff3e0,stroke:#ef6c00,stroke-width:1px;
+
+                class B,C,D p0;
+                class E,F,G p1;
+        </div>
+
+        <script>
+            mermaid.initialize({
+                startOnLoad: true,
+                theme: 'default',
+                flowchart: {
+                    useMaxWidth: true,
+                    htmlLabels: true,
+                    curve: 'basis',
+                    nodeSpacing: 15,
+                    rankSpacing: 50,
+                    defaultRenderer: 'elk'
+                }
+            });
+        </script>
+    </div>
+</body>
+</html>
