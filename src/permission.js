@@ -9,7 +9,7 @@ import { getFirstPath, traverseTree } from '@/utils/index';
 
 NProgress.configure({ showSpinner: false });
 
-const whiteList = ['/login', '/register', '/forward/index'];
+const whiteList = ['/login', '/register', '/functionComponents'];
 
 router.beforeEach((to, from, next) => {
   NProgress.start();

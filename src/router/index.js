@@ -63,8 +63,8 @@ export const constantRoutes = [
   },
 
   {
-    path: '/forward/index',
-    component: () => import('@/views/forward/index'),
+    path: '/functionComponents',
+    component: () => import('@/views/functionComponents/index'),
     hidden: true,
     meta: { title: '', requireAuth: "noAuth", },
   },

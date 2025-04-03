@@ -1,5 +1,7 @@
 <template>
-  <div class="app-container"></div>
+  <div class="app-container">
+    <MyUpload></MyUpload>
+  </div>
 </template>
 <script>
   export default {

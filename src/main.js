@@ -5,6 +5,9 @@ import Cookies from 'js-cookie';
 import Element from 'element-ui';
 import './assets/styles/element-variables.scss';
 
+import ViewUI from 'view-design';
+import 'view-design/dist/styles/iview.css';
+
 import '@/assets/styles/index.scss'; // global css
 import '@/assets/styles/ruoyi.scss'; // ruoyi css
 import App from './App';
@@ -17,6 +20,8 @@ import '@/utils/storageExpire.js'; // 有期限的localStorage
 
 import './assets/icons'; // icon
 import './permission'; // permission control
+
+import '../功能组件/index.js';
 
 import { getDicts } from '@/api/system/dict/data';
 import { getConfigKey } from '@/api/system/config';
@@ -91,6 +96,9 @@ Element.Input.render = function () {
 Vue.use(Element, {
   size: Cookies.get('size') || 'medium', // set element-ui default size
 });
+
+
+Vue.use(ViewUI);
 
 Vue.config.productionTip = false;
 
